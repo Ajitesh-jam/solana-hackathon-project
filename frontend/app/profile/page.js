@@ -1,52 +1,23 @@
 "use client"
 
+import { useState } from "react"
+import Image from "next/image"
 import { motion } from "framer-motion"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { User, Wallet, Coins, Trophy, History, Settings, Shield, Gamepad2 } from "lucide-react"
+import { Wallet, User, Trophy, Clock, Edit } from "lucide-react"
 
 export default function ProfilePage() {
   // Mock user data
-  const user = {
+  const [user, setUser] = useState({
     name: "CryptoGamer",
     image: "/placeholder.svg?height=200&width=200",
-    wallet: "8xH4Zw9Y3mKn2TjP...",
-    tokens: 750,
-    joinDate: "January 2023",
+    wallet: "0x1a2b...3c4d",
+    tokens: 1250,
+    joinedDate: "2023-01-15",
     gamesPlayed: 42,
     wins: 28,
     losses: 14,
-  }
-
-  // Mock game history
-  const gameHistory = [
-    {
-      id: 1,
-      game: "Solana Battleground",
-      opponent: "BlockchainNinja",
-      result: "win",
-      reward: 150,
-      date: "Apr 28, 2023",
-    },
-    {
-      id: 2,
-      game: "Solana Ops",
-      opponent: "CryptoWarrior",
-      result: "loss",
-      stake: 75,
-      date: "Apr 25, 2023",
-    },
-    {
-      id: 3,
-      game: "Call of Duty",
-      opponent: "SolanaKing",
-      result: "win",
-      reward: 200,
-      date: "Apr 20, 2023",
-    },
-  ]
+  })
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -54,6 +25,7 @@ export default function ProfilePage() {
       opacity: 1,
       transition: {
         staggerChildren: 0.1,
+        delayChildren: 0.3,
       },
     },
   }
@@ -63,228 +35,179 @@ export default function ProfilePage() {
     visible: {
       y: 0,
       opacity: 1,
-      transition: {
-        duration: 0.5,
-      },
+      transition: { duration: 0.5 },
     },
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white p-4 md:p-8">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="mb-8"
-      >
-        <h1 className="text-3xl md:text-4xl font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">
-          Your Profile
-        </h1>
-        <p className="text-gray-300">Manage your gaming profile and track your performance</p>
-      </motion.div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div className="container mx-auto px-4 py-12">
+      <motion.div initial="hidden" animate="visible" variants={containerVariants} className="max-w-4xl mx-auto">
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-          className="lg:col-span-1"
+          variants={itemVariants}
+          className="bg-gradient-to-r from-purple-900/30 to-pink-900/30 rounded-xl p-8 mb-12"
         >
-          <Card className="bg-gray-800/50 border-gray-700">
-            <CardHeader className="pb-2">
-              <CardTitle>Profile</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-col items-center text-center mb-6">
-                <Avatar className="w-24 h-24 mb-4 border-2 border-purple-500">
-                  <AvatarImage src={user.image || "/placeholder.svg"} alt={user.name} />
-                  <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
-                </Avatar>
-                <h2 className="text-2xl font-bold mb-1">{user.name}</h2>
-                <div className="flex items-center text-sm text-gray-400 mb-4">
-                  <Wallet className="w-4 h-4 mr-1" />
+          <div className="flex flex-col md:flex-row items-center gap-8">
+            <div className="relative">
+              <div className="rounded-full overflow-hidden h-32 w-32 border-4 border-purple-500">
+                <Image
+                  src={user.image || "/placeholder.svg"}
+                  alt={user.name}
+                  width={128}
+                  height={128}
+                  className="object-cover"
+                />
+              </div>
+              <button className="absolute bottom-0 right-0 bg-purple-600 rounded-full p-2 hover:bg-purple-700">
+                <Edit className="h-4 w-4" />
+              </button>
+            </div>
+
+            <div className="flex-1 text-center md:text-left">
+              <h1 className="text-3xl font-bold mb-2">{user.name}</h1>
+              <div className="flex flex-col md:flex-row gap-4 text-gray-400">
+                <div className="flex items-center justify-center md:justify-start">
+                  <Wallet className="h-4 w-4 mr-2 text-purple-400" />
                   <span>{user.wallet}</span>
                 </div>
-                <div className="flex items-center justify-center bg-gray-700/50 rounded-full px-4 py-2 mb-4">
-                  <Coins className="w-5 h-5 mr-2 text-yellow-400" />
-                  <span className="text-xl font-bold">{user.tokens} Tokens</span>
+                <div className="flex items-center justify-center md:justify-start">
+                  <Clock className="h-4 w-4 mr-2 text-purple-400" />
+                  <span>Joined {new Date(user.joinedDate).toLocaleDateString()}</span>
                 </div>
-                <Button className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700">
-                  Edit Profile
+              </div>
+            </div>
+
+            <div className="bg-gray-800 rounded-lg p-4 flex items-center">
+              <Wallet className="h-6 w-6 text-purple-400 mr-3" />
+              <div>
+                <p className="text-sm text-gray-400">Balance</p>
+                <p className="text-xl font-bold">{user.tokens} SOL</p>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <motion.div variants={itemVariants} className="bg-gray-800 rounded-xl p-6">
+            <h2 className="text-xl font-bold mb-6 flex items-center">
+              <Trophy className="h-5 w-5 text-yellow-400 mr-2" />
+              Stats
+            </h2>
+
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <span className="text-gray-400">Games Played</span>
+                <span className="font-bold">{user.gamesPlayed}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-gray-400">Wins</span>
+                <span className="font-bold text-green-400">{user.wins}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-gray-400">Losses</span>
+                <span className="font-bold text-red-400">{user.losses}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-gray-400">Win Rate</span>
+                <span className="font-bold">{Math.round((user.wins / user.gamesPlayed) * 100)}%</span>
+              </div>
+
+              <div className="mt-6 pt-4 border-t border-gray-700">
+                <div className="relative pt-1">
+                  <div className="flex mb-2 items-center justify-between">
+                    <div>
+                      <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-green-400 bg-green-900/30">
+                        Win Rate
+                      </span>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-xs font-semibold inline-block text-green-400">
+                        {Math.round((user.wins / user.gamesPlayed) * 100)}%
+                      </span>
+                    </div>
+                  </div>
+                  <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-gray-700">
+                    <div
+                      style={{ width: `${Math.round((user.wins / user.gamesPlayed) * 100)}%` }}
+                      className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-gradient-to-r from-green-500 to-teal-500"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div variants={itemVariants} className="bg-gray-800 rounded-xl p-6">
+            <h2 className="text-xl font-bold mb-6 flex items-center">
+              <User className="h-5 w-5 text-purple-400 mr-2" />
+              Account Settings
+            </h2>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-2">Username</label>
+                <input
+                  type="text"
+                  value={user.name}
+                  onChange={(e) => setUser({ ...user, name: e.target.value })}
+                  className="w-full bg-gray-900 border border-gray-700 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-2">Email Notifications</label>
+                <div className="space-y-2">
+                  <div className="flex items-center">
+                    <input
+                      type="checkbox"
+                      id="notify-games"
+                      className="rounded text-purple-500 focus:ring-purple-500 bg-gray-900 border-gray-700"
+                      defaultChecked
+                    />
+                    <label htmlFor="notify-games" className="ml-2 text-sm text-gray-300">
+                      Game invitations
+                    </label>
+                  </div>
+                  <div className="flex items-center">
+                    <input
+                      type="checkbox"
+                      id="notify-rewards"
+                      className="rounded text-purple-500 focus:ring-purple-500 bg-gray-900 border-gray-700"
+                      defaultChecked
+                    />
+                    <label htmlFor="notify-rewards" className="ml-2 text-sm text-gray-300">
+                      Reward notifications
+                    </label>
+                  </div>
+                  <div className="flex items-center">
+                    <input
+                      type="checkbox"
+                      id="notify-news"
+                      className="rounded text-purple-500 focus:ring-purple-500 bg-gray-900 border-gray-700"
+                    />
+                    <label htmlFor="notify-news" className="ml-2 text-sm text-gray-300">
+                      News and updates
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-4">
+                <Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
+                  Save Changes
                 </Button>
               </div>
+            </div>
+          </motion.div>
+        </div>
 
-              <div className="space-y-4">
-                <div className="flex justify-between items-center p-3 bg-gray-700/30 rounded-lg">
-                  <div className="flex items-center">
-                    <User className="w-5 h-5 mr-3 text-purple-400" />
-                    <span>Member Since</span>
-                  </div>
-                  <span className="text-gray-300">{user.joinDate}</span>
-                </div>
-
-                <div className="flex justify-between items-center p-3 bg-gray-700/30 rounded-lg">
-                  <div className="flex items-center">
-                    <Gamepad2 className="w-5 h-5 mr-3 text-blue-400" />
-                    <span>Games Played</span>
-                  </div>
-                  <span className="text-gray-300">{user.gamesPlayed}</span>
-                </div>
-
-                <div className="flex justify-between items-center p-3 bg-gray-700/30 rounded-lg">
-                  <div className="flex items-center">
-                    <Trophy className="w-5 h-5 mr-3 text-yellow-400" />
-                    <span>Win Rate</span>
-                  </div>
-                  <span className="text-gray-300">{Math.round((user.wins / user.gamesPlayed) * 100)}%</span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+        <motion.div variants={itemVariants} className="mt-12 bg-gray-800/50 rounded-xl p-8 text-center">
+          <h2 className="text-2xl font-bold mb-4">Ready to Play?</h2>
+          <p className="text-gray-400 mb-6">Jump back into the action and earn more rewards!</p>
+          <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-lg py-6 px-8">
+            Play Now
+          </Button>
         </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="lg:col-span-2"
-        >
-          <Tabs defaultValue="history" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 mb-8">
-              <TabsTrigger value="history" className="text-sm md:text-base">
-                <History className="w-4 h-4 mr-2" /> Game History
-              </TabsTrigger>
-              <TabsTrigger value="stats" className="text-sm md:text-base">
-                <Shield className="w-4 h-4 mr-2" /> Stats
-              </TabsTrigger>
-              <TabsTrigger value="settings" className="text-sm md:text-base">
-                <Settings className="w-4 h-4 mr-2" /> Settings
-              </TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="history">
-              <Card className="bg-gray-800/50 border-gray-700">
-                <CardHeader>
-                  <CardTitle>Recent Games</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {gameHistory.map((game) => (
-                      <div
-                        key={game.id}
-                        className="flex flex-col md:flex-row md:items-center justify-between p-4 bg-gray-700/30 rounded-lg"
-                      >
-                        <div className="flex items-center mb-3 md:mb-0">
-                          <div
-                            className={`w-10 h-10 rounded-full flex items-center justify-center mr-4 ${
-                              game.result === "win" ? "bg-green-500/20" : "bg-red-500/20"
-                            }`}
-                          >
-                            {game.result === "win" ? (
-                              <Trophy className="w-5 h-5 text-green-400" />
-                            ) : (
-                              <Shield className="w-5 h-5 text-red-400" />
-                            )}
-                          </div>
-                          <div>
-                            <h3 className="font-medium">{game.game}</h3>
-                            <p className="text-sm text-gray-400">vs {game.opponent}</p>
-                          </div>
-                        </div>
-
-                        <div className="flex items-center justify-between md:justify-end w-full md:w-auto">
-                          <div className="md:mr-8">
-                            <p className="text-sm text-gray-400">Result</p>
-                            <p className={`font-medium ${game.result === "win" ? "text-green-400" : "text-red-400"}`}>
-                              {game.result === "win" ? "Victory" : "Defeat"}
-                            </p>
-                          </div>
-
-                          <div className="md:mr-8">
-                            <p className="text-sm text-gray-400">{game.result === "win" ? "Reward" : "Stake"}</p>
-                            <p className="font-medium flex items-center">
-                              <Coins className="w-4 h-4 mr-1 text-yellow-400" />
-                              {game.result === "win" ? game.reward : game.stake}
-                            </p>
-                          </div>
-
-                          <div className="text-right">
-                            <p className="text-sm text-gray-400">Date</p>
-                            <p className="font-medium">{game.date}</p>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="stats">
-              <Card className="bg-gray-800/50 border-gray-700">
-                <CardHeader>
-                  <CardTitle>Performance Stats</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                    <div className="bg-gray-700/30 rounded-lg p-4 text-center">
-                      <h3 className="text-sm text-gray-400 mb-1">Total Games</h3>
-                      <p className="text-3xl font-bold">{user.gamesPlayed}</p>
-                    </div>
-
-                    <div className="bg-green-900/30 rounded-lg p-4 text-center">
-                      <h3 className="text-sm text-gray-400 mb-1">Wins</h3>
-                      <p className="text-3xl font-bold text-green-400">{user.wins}</p>
-                    </div>
-
-                    <div className="bg-red-900/30 rounded-lg p-4 text-center">
-                      <h3 className="text-sm text-gray-400 mb-1">Losses</h3>
-                      <p className="text-3xl font-bold text-red-400">{user.losses}</p>
-                    </div>
-                  </div>
-
-                  <div className="bg-gray-700/30 rounded-lg p-6">
-                    <h3 className="text-lg font-medium mb-4">Win Rate</h3>
-                    <div className="w-full bg-gray-700 rounded-full h-4 mb-2">
-                      <div
-                        className="bg-gradient-to-r from-blue-500 to-purple-500 h-4 rounded-full"
-                        style={{ width: `${Math.round((user.wins / user.gamesPlayed) * 100)}%` }}
-                      ></div>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span>0%</span>
-                      <span className="font-medium">{Math.round((user.wins / user.gamesPlayed) * 100)}%</span>
-                      <span>100%</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="settings">
-              <Card className="bg-gray-800/50 border-gray-700">
-                <CardHeader>
-                  <CardTitle>Account Settings</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-400 mb-4">Manage your account settings and preferences</p>
-                  <div className="space-y-4">
-                    <Button className="w-full justify-start">
-                      <User className="mr-2" /> Edit Profile
-                    </Button>
-                    <Button className="w-full justify-start">
-                      <Wallet className="mr-2" /> Manage Wallet
-                    </Button>
-                    <Button className="w-full justify-start">
-                      <Settings className="mr-2" /> Preferences
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
-        </motion.div>
-      </div>
+      </motion.div>
     </div>
   )
 }

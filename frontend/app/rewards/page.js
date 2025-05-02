@@ -1,52 +1,25 @@
 "use client"
 
+import { useState } from "react"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { useToast } from "@/hooks/use-toast"
-import { Trophy, Coins, ArrowRight, Gift } from "lucide-react"
-import RewardCard from "@/components/reward-card"
+import { Trophy, Award, CheckCircle } from "lucide-react"
+
+// Mock rewards data
+const mockRewards = [
+  { id: 1, game: "Solana Battlefield", amount: 150, date: "2023-05-15", claimed: false },
+  { id: 2, game: "Solana Ops", amount: 75, date: "2023-05-10", claimed: true },
+  { id: 3, game: "Call of Duty", amount: 200, date: "2023-05-05", claimed: false },
+]
 
 export default function RewardsPage() {
-  const { toast } = useToast()
+  const [rewards, setRewards] = useState(mockRewards)
 
-  // Mock rewards data
-  const rewards = [
-    {
-      id: 1,
-      gameId: "solana-battleground",
-      gameName: "Solana Battleground",
-      amount: 150,
-      date: "2023-04-28",
-      opponent: "CryptoWarrior",
-      claimed: false,
-    },
-    {
-      id: 2,
-      gameId: "solana-ops",
-      gameName: "Solana Ops",
-      amount: 75,
-      date: "2023-04-25",
-      opponent: "BlockchainNinja",
-      claimed: false,
-    },
-    {
-      id: 3,
-      gameId: "call-of-duty",
-      gameName: "Call of Duty",
-      amount: 200,
-      date: "2023-04-20",
-      opponent: "SolanaKing",
-      claimed: true,
-    },
-  ]
-
-  const handleClaimReward = (rewardId) => {
-    // This is where you would implement the claim logic
-    toast({
-      title: "Reward Claimed!",
-      description: "Your tokens have been transferred to your wallet",
-    })
+  const handleClaim = (id) => {
+    setRewards(rewards.map((reward) => (reward.id === id ? { ...reward, claimed: true } : reward)))
   }
+
+  const totalUnclaimed = rewards.filter((reward) => !reward.claimed).reduce((sum, reward) => sum + reward.amount, 0)
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -54,6 +27,7 @@ export default function RewardsPage() {
       opacity: 1,
       transition: {
         staggerChildren: 0.1,
+        delayChildren: 0.3,
       },
     },
   }
@@ -63,87 +37,99 @@ export default function RewardsPage() {
     visible: {
       y: 0,
       opacity: 1,
-      transition: {
-        duration: 0.5,
-      },
+      transition: { duration: 0.5 },
     },
   }
 
-  const totalRewards = rewards.reduce((sum, reward) => sum + (reward.claimed ? 0 : reward.amount), 0)
-
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white p-4 md:p-8">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="mb-8"
-      >
-        <h1 className="text-3xl md:text-4xl font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">
-          Your Rewards
-        </h1>
-        <p className="text-gray-300">Claim your hard-earned rewards from your victories</p>
-      </motion.div>
+    <div className="container mx-auto px-4 py-12">
+      <motion.div initial="hidden" animate="visible" variants={containerVariants} className="max-w-4xl mx-auto">
+        <motion.div variants={itemVariants} className="text-center mb-12">
+          <h1 className="text-4xl font-bold mb-4">Your Rewards</h1>
+          <p className="text-gray-400 text-lg">Claim your hard-earned rewards from your gaming victories!</p>
+        </motion.div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-          className="bg-gradient-to-br from-yellow-900/30 to-orange-900/30 rounded-lg p-6 border border-yellow-800/50 col-span-1 lg:col-span-2"
+          variants={itemVariants}
+          className="bg-gradient-to-r from-purple-900/30 to-pink-900/30 rounded-xl p-8 mb-12"
         >
-          <div className="flex items-center mb-4">
-            <Trophy className="w-8 h-8 mr-3 text-yellow-400" />
-            <h2 className="text-2xl font-bold text-yellow-400">Champion's Rewards</h2>
-          </div>
-          <p className="text-gray-300 mb-6">
-            Congratulations on your victories! You've earned rewards by defeating your opponents in various games. Claim
-            your rewards now and continue your winning streak.
-          </p>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-400">Available to claim</p>
-              <p className="text-3xl font-bold text-white flex items-center">
-                <Coins className="w-6 h-6 mr-2 text-yellow-400" />
-                {totalRewards} Tokens
-              </p>
+          <div className="flex flex-col md:flex-row items-center justify-between">
+            <div className="flex items-center mb-6 md:mb-0">
+              <Trophy className="h-12 w-12 text-yellow-400 mr-4" />
+              <div>
+                <h2 className="text-2xl font-bold">Total Unclaimed Rewards</h2>
+                <p className="text-3xl font-bold text-yellow-400">{totalUnclaimed} SOL</p>
+              </div>
             </div>
+
             <Button
-              disabled={totalRewards === 0}
-              className="bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-700 hover:to-orange-700 text-white"
+              className="bg-gradient-to-r from-yellow-600 to-amber-600 hover:from-yellow-700 hover:to-amber-700 text-lg py-6 px-8"
+              disabled={totalUnclaimed === 0}
+              onClick={() => {
+                setRewards(rewards.map((reward) => ({ ...reward, claimed: true })))
+              }}
             >
-              Claim All <ArrowRight className="ml-2 w-4 h-4" />
+              Claim All Rewards
             </Button>
           </div>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="bg-gradient-to-br from-purple-900/30 to-blue-900/30 rounded-lg p-6 border border-purple-800/50"
-        >
-          <div className="flex items-center mb-4">
-            <Gift className="w-8 h-8 mr-3 text-purple-400" />
-            <h2 className="text-2xl font-bold text-purple-400">Bonus Rewards</h2>
+        <motion.div variants={itemVariants}>
+          <h2 className="text-2xl font-bold mb-6">Reward History</h2>
+
+          <div className="space-y-4">
+            {rewards.map((reward, index) => (
+              <motion.div
+                key={reward.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.1 }}
+                className="bg-gray-800 rounded-lg p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between"
+              >
+                <div>
+                  <div className="flex items-center mb-2">
+                    <Award className="h-5 w-5 text-purple-400 mr-2" />
+                    <h3 className="font-semibold text-lg">{reward.game}</h3>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row gap-2 sm:gap-6 text-sm text-gray-400">
+                    <span>{new Date(reward.date).toLocaleDateString()}</span>
+                    <span className="font-bold text-yellow-400">{reward.amount} SOL</span>
+                  </div>
+                </div>
+
+                {reward.claimed ? (
+                  <div className="flex items-center text-green-400 mt-4 sm:mt-0">
+                    <CheckCircle className="h-5 w-5 mr-2" />
+                    <span>Claimed</span>
+                  </div>
+                ) : (
+                  <Button
+                    className="bg-gradient-to-r from-yellow-600 to-amber-600 hover:from-yellow-700 hover:to-amber-700 mt-4 sm:mt-0"
+                    onClick={() => handleClaim(reward.id)}
+                  >
+                    Claim Reward
+                  </Button>
+                )}
+              </motion.div>
+            ))}
+
+            {rewards.length === 0 && (
+              <div className="text-center py-12 bg-gray-800/50 rounded-lg">
+                <Trophy className="h-16 w-16 mx-auto text-gray-600 mb-4" />
+                <p className="text-gray-400 text-lg">No rewards yet. Play games to earn rewards!</p>
+              </div>
+            )}
           </div>
-          <p className="text-gray-300 mb-6">Complete special challenges to earn bonus rewards and exclusive items.</p>
-          <Button className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white">
-            View Challenges
+        </motion.div>
+
+        <motion.div variants={itemVariants} className="mt-12 bg-gray-800/50 rounded-xl p-8 text-center">
+          <h2 className="text-2xl font-bold mb-4">Ready to Win More?</h2>
+          <p className="text-gray-400 mb-6">Jump back into the action and earn more rewards!</p>
+          <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-lg py-6 px-8">
+            Play Now
           </Button>
         </motion.div>
-      </div>
-
-      <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-6">
-        <h2 className="text-2xl font-bold mb-4">Your Reward History</h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {rewards.map((reward) => (
-            <motion.div key={reward.id} variants={itemVariants}>
-              <RewardCard reward={reward} onClaim={() => handleClaimReward(reward.id)} />
-            </motion.div>
-          ))}
-        </div>
       </motion.div>
     </div>
   )

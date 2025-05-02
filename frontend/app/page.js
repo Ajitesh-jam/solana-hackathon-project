@@ -1,41 +1,44 @@
 "use client"
 import { motion } from "framer-motion"
-import GameCarousel from "@/components/game-carousel"
-import GameCard from "@/components/game-card"
 import { Button } from "@/components/ui/button"
-import { ArrowRight, Trophy, Gamepad2, Coins } from "lucide-react"
+import GameCarousel from "@/components/GameCarousel"
+import GameCard from "@/components/GameCard"
+import { Gamepad2, Trophy, Coins, Users } from "lucide-react"
+
+// Game data
+const games = [
+  {
+    id: "solanabattlefield",
+    name: "Solana Battlefield",
+    description: "Intense multiplayer battles with strategic gameplay and high stakes rewards.",
+    image: "/placeholder.svg?height=600&width=800",
+    link: "/games/solanabattlefield",
+  },
+  {
+    id: "solanaops",
+    name: "Solana Ops",
+    description: "Tactical team-based missions with real-time combat and blockchain rewards.",
+    image: "/placeholder.svg?height=600&width=800",
+    link: "/games/solanaops",
+  },
+  {
+    id: "callofduty",
+    name: "Call of Duty",
+    description: "The legendary FPS now with Solana integration. Stake, play, and earn.",
+    image: "/placeholder.svg?height=600&width=800",
+    link: "/games/callofduty",
+  },
+]
 
 export default function Home() {
-  const games = [
-    {
-      id: 1,
-      name: "Solana Battleground",
-      description: "Engage in epic battles and earn rewards by defeating opponents",
-      image: "/placeholder.svg?height=600&width=800",
-      link: "/games/solana-battleground",
-    },
-    {
-      id: 2,
-      name: "Solana Ops",
-      description: "Strategic operations in the Solana universe with high stakes rewards",
-      image: "/placeholder.svg?height=600&width=800",
-      link: "/games/solana-ops",
-    },
-    {
-      id: 3,
-      name: "Call of Duty",
-      description: "The classic shooter reimagined with Solana staking and rewards",
-      image: "/placeholder.svg?height=600&width=800",
-      link: "/games/call-of-duty",
-    },
-  ]
-
+  // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.3,
+        staggerChildren: 0.2,
+        delayChildren: 0.3,
       },
     },
   }
@@ -45,9 +48,7 @@ export default function Home() {
     visible: {
       y: 0,
       opacity: 1,
-      transition: {
-        duration: 0.5,
-      },
+      transition: { duration: 0.5 },
     },
   }
 
@@ -63,128 +64,134 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-b from-black to-gray-900">
       {/* Hero Section */}
-      <section className="relative h-[80vh] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-black/60 z-10"></div>
-          <div className="absolute inset-0 bg-gradient-to-r from-purple-900/20 to-blue-900/20 z-20"></div>
-          <div className="absolute w-full h-full bg-[url('/placeholder.svg?height=1080&width=1920')] bg-cover bg-center z-0"></div>
-        </div>
+      <section className="relative py-20 overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/placeholder.svg?height=1080&width=1920')] bg-cover bg-center opacity-20"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black"></div>
 
-        <div className="container mx-auto px-4 z-30 relative">
+        <div className="container mx-auto px-4 relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center"
+            className="text-center max-w-4xl mx-auto"
+            initial="hidden"
+            animate="visible"
+            variants={containerVariants}
           >
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-500">
-              Stake. Play. Win.
-            </h1>
-            <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-              Challenge opponents, stake your tokens, and earn rewards in our competitive Solana gaming ecosystem.
-            </p>
-            <Button
-              size="lg"
-              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-6 rounded-full text-lg"
+            <motion.h1
+              className="text-4xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500"
+              variants={itemVariants}
             >
-              Start Gaming <ArrowRight className="ml-2" />
-            </Button>
+              Compete. Stake. Win.
+            </motion.h1>
+            <motion.p className="text-xl text-gray-300 mb-8" variants={itemVariants}>
+              Join the ultimate blockchain gaming ecosystem where your skills earn you real rewards.
+            </motion.p>
+            <motion.div variants={itemVariants}>
+              <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-lg py-6 px-8">
+                Start Playing Now
+              </Button>
+            </motion.div>
           </motion.div>
         </div>
 
         {/* Floating Icons */}
-        <motion.div
-          variants={floatingIconVariants}
-          animate="animate"
-          className="absolute top-1/4 left-1/4 text-purple-500"
-        >
-          <Gamepad2 size={40} />
-        </motion.div>
-
-        <motion.div
-          variants={floatingIconVariants}
-          animate="animate"
-          className="absolute bottom-1/4 right-1/4 text-blue-500"
-        >
-          <Trophy size={40} />
-        </motion.div>
-
-        <motion.div
-          variants={floatingIconVariants}
-          animate="animate"
-          className="absolute top-1/3 right-1/3 text-yellow-500"
-        >
-          <Coins size={40} />
-        </motion.div>
-      </section>
-
-      {/* Game Carousel Section */}
-      <section className="py-16 bg-gray-900/50 backdrop-blur-sm">
-        <div className="container mx-auto px-4">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-            className="text-3xl md:text-4xl font-bold mb-12 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400"
-          >
-            Featured Games
-          </motion.h2>
-
-          <GameCarousel games={games} />
-        </div>
-      </section>
-
-      {/* Game Cards Section */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-            className="text-3xl md:text-4xl font-bold mb-12 text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400"
-          >
-            Explore Our Games
-          </motion.h2>
-
+        <div className="absolute inset-0 pointer-events-none">
+          <motion.div className="absolute top-1/4 left-1/4" variants={floatingIconVariants} animate="animate">
+            <Gamepad2 className="h-12 w-12 text-purple-500 opacity-30" />
+          </motion.div>
           <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            className="absolute top-1/3 right-1/4"
+            variants={floatingIconVariants}
+            animate="animate"
+            transition={{ delay: 0.5 }}
           >
-            {games.map((game) => (
-              <motion.div key={game.id} variants={itemVariants}>
-                <GameCard game={game} />
-              </motion.div>
-            ))}
+            <Trophy className="h-10 w-10 text-yellow-500 opacity-30" />
+          </motion.div>
+          <motion.div
+            className="absolute bottom-1/4 left-1/3"
+            variants={floatingIconVariants}
+            animate="animate"
+            transition={{ delay: 1 }}
+          >
+            <Coins className="h-14 w-14 text-green-500 opacity-30" />
+          </motion.div>
+          <motion.div
+            className="absolute bottom-1/3 right-1/3"
+            variants={floatingIconVariants}
+            animate="animate"
+            transition={{ delay: 1.5 }}
+          >
+            <Users className="h-8 w-8 text-blue-500 opacity-30" />
           </motion.div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-r from-purple-900/30 to-blue-900/30">
-        <div className="container mx-auto px-4 text-center">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+      {/* Game Carousel */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <motion.h2
+            className="text-3xl font-bold mb-12 text-center"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
-            className="max-w-3xl mx-auto"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Compete?</h2>
-            <p className="text-lg mb-8">
-              Join thousands of players already staking, competing, and earning rewards in our Solana gaming ecosystem.
-            </p>
-            <Button
-              size="lg"
-              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-6 rounded-full text-lg"
-            >
-              Connect Wallet
+            Featured Games
+          </motion.h2>
+          <GameCarousel games={games} />
+        </div>
+      </section>
+
+      {/* Game Cards */}
+      <section className="py-16 bg-gray-900/50">
+        <div className="container mx-auto px-4">
+          <motion.h2
+            className="text-3xl font-bold mb-12 text-center"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+          >
+            Explore Our Games
+          </motion.h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {games.map((game, index) => (
+              <GameCard key={game.id} game={game} index={index} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 bg-gradient-to-r from-purple-900/20 to-pink-900/20">
+        <div className="container mx-auto px-4 text-center">
+          <motion.h2
+            className="text-3xl font-bold mb-6"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+          >
+            Ready to Join the Competition?
+          </motion.h2>
+          <motion.p
+            className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            viewport={{ once: true }}
+          >
+            Create an account, connect your Solana wallet, and start earning rewards today.
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            viewport={{ once: true }}
+          >
+            <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-lg py-6 px-8">
+              Sign Up Now
             </Button>
           </motion.div>
         </div>

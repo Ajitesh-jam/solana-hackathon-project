@@ -1,102 +1,101 @@
-"use client"
+import * as React from "react"
 
-import { forwardRef } from "react"
-import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
 
-const Card = forwardRef(({ className, ...props }, ref) => {
+function Card({
+  className,
+  ...props
+}) {
   return (
-    <motion.div
-      ref={ref}
+    <div
+      data-slot="card"
       className={cn(
-        "rounded-lg border border-gray-700 bg-gray-800/50 backdrop-blur-sm text-white shadow-md overflow-hidden",
-        className,
+        "bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm",
+        className
       )}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4 }}
-      whileHover={{
-        boxShadow: "0 0 15px rgba(138, 43, 226, 0.3)",
-        borderColor: "rgba(138, 43, 226, 0.5)",
-        transition: { duration: 0.2 },
-      }}
-      {...props}
-    />
-  )
-})
-Card.displayName = "Card"
+      {...props} />
+  );
+}
 
-const CardHeader = forwardRef(({ className, ...props }, ref) => {
+function CardHeader({
+  className,
+  ...props
+}) {
   return (
-    <motion.div
-      ref={ref}
-      className={cn("flex flex-col space-y-1.5 p-6", className)}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.3, delay: 0.1 }}
-      {...props}
-    />
-  )
-})
-CardHeader.displayName = "CardHeader"
-
-const CardTitle = forwardRef(({ className, ...props }, ref) => {
-  return (
-    <motion.h3
-      ref={ref}
+    <div
+      data-slot="card-header"
       className={cn(
-        "text-2xl font-semibold leading-none tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400",
-        className,
+        "@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6",
+        className
       )}
-      initial={{ opacity: 0, x: -10 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.3, delay: 0.2 }}
-      {...props}
-    />
-  )
-})
-CardTitle.displayName = "CardTitle"
+      {...props} />
+  );
+}
 
-const CardDescription = forwardRef(({ className, ...props }, ref) => {
+function CardTitle({
+  className,
+  ...props
+}) {
   return (
-    <motion.p
-      ref={ref}
-      className={cn("text-sm text-gray-400", className)}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.3, delay: 0.3 }}
-      {...props}
-    />
-  )
-})
-CardDescription.displayName = "CardDescription"
+    <div
+      data-slot="card-title"
+      className={cn("leading-none font-semibold", className)}
+      {...props} />
+  );
+}
 
-const CardContent = forwardRef(({ className, ...props }, ref) => {
+function CardDescription({
+  className,
+  ...props
+}) {
   return (
-    <motion.div
-      ref={ref}
-      className={cn("p-6 pt-0", className)}
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3, delay: 0.3 }}
-      {...props}
-    />
-  )
-})
-CardContent.displayName = "CardContent"
+    <div
+      data-slot="card-description"
+      className={cn("text-muted-foreground text-sm", className)}
+      {...props} />
+  );
+}
 
-const CardFooter = forwardRef(({ className, ...props }, ref) => {
+function CardAction({
+  className,
+  ...props
+}) {
   return (
-    <motion.div
-      ref={ref}
-      className={cn("flex items-center p-6 pt-0", className)}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.3, delay: 0.4 }}
-      {...props}
-    />
-  )
-})
-CardFooter.displayName = "CardFooter"
+    <div
+      data-slot="card-action"
+      className={cn(
+        "col-start-2 row-span-2 row-start-1 self-start justify-self-end",
+        className
+      )}
+      {...props} />
+  );
+}
 
-export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
+function CardContent({
+  className,
+  ...props
+}) {
+  return (<div data-slot="card-content" className={cn("px-6", className)} {...props} />);
+}
+
+function CardFooter({
+  className,
+  ...props
+}) {
+  return (
+    <div
+      data-slot="card-footer"
+      className={cn("flex items-center px-6 [.border-t]:pt-6", className)}
+      {...props} />
+  );
+}
+
+export {
+  Card,
+  CardHeader,
+  CardFooter,
+  CardTitle,
+  CardAction,
+  CardDescription,
+  CardContent,
+}
