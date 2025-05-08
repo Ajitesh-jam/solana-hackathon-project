@@ -1,0 +1,9 @@
+{
+  "tokenName": "MY_CUSTOM_TOKEN",
+  "tokenSymbol": "MCT",
+  "tokenDescription": "My first custom Solana token",
+  "decimals": 8,
+  "mintAddress": "3BLwDckxdND2duPD9MShxrELZCouu4i2LMYmRQLQVPHW",
+  "mintAuthority": "G2FAbFQPFa5qKXCetoFZQEvF9BVvCKbvUZvodpVidnoY",
+  "freezeAuthority": "G2FAbFQPFa5qKXCetoFZQEvF9BVvCKbvUZvodpVidnoY"
+}

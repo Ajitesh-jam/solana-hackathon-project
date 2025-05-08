@@ -1,0 +1,75 @@
+(base) ajiteshjamulkar@Ajiteshs-MacBook-Pro token % node createtoken.mjs       
+🚀 Starting token creation process...
+💻 Connecting to Solana network: http://127.0.0.1:8899
+✅ Connection established
+📦 Recent blockhash: 5sn4dnPepGTNzre4XEZ3NeNKQ5DbrYaKkb6uXsvutimj
+🔑 Setting up fee payer wallet...
+📝 Fee payer public key: 5YNmS1R9nNSCDzb5a7mMJ1dwK9uHeAAF4CmPEwKgVWr8
+💰 Requesting airdrop of 1 SOL to fee payer...
+📡 Airdrop transaction signature: 3ihsgTCikn4P9XbK3mbfypBzhuxvnDbM5jak1tY2AvxtfGf5u7VFBXNyQ66TDHtGmXnMsRkuXNZyJMZ4XFNUBug8
+⏳ Waiting for airdrop confirmation...
+✅ Airdrop confirmed
+💰 Fee payer balance: 15.95853876 SOL
+🔑 Setting up mint authority...
+📝 Mint authority public key: G2FAbFQPFa5qKXCetoFZQEvF9BVvCKbvUZvodpVidnoY
+🏭 Creating token with 8 decimals...
+⏳ This may take a moment...
+✅ Token mint created successfully!
+📝 Mint address: 3BLwDckxdND2duPD9MShxrELZCouu4i2LMYmRQLQVPHW
+💾 Token information saved to token-info.json
+
+🔍 Fetching token information...
+
+✨ Token created successfully! ✨
+=== Token Details ===
+Name: MY_CUSTOM_TOKEN
+Symbol: MCT
+Mint Address: 3BLwDckxdND2duPD9MShxrELZCouu4i2LMYmRQLQVPHW
+Decimals: 8
+Mint Authority: G2FAbFQPFa5qKXCetoFZQEvF9BVvCKbvUZvodpVidnoY
+Freeze Authority: G2FAbFQPFa5qKXCetoFZQEvF9BVvCKbvUZvodpVidnoY
+Current Supply: 0
+
+🎉 Token creation complete! Next steps would be to:
+1. Create a token account
+2. Mint tokens to that account
+3. Add metadata (optional)
+
+
+
+(base) ajiteshjamulkar@Ajiteshs-MacBook-Pro token % node createTokenAccount.mjs
+🏦 Starting token account creation process...
+💻 Connecting to Solana network: http://127.0.0.1:8899
+✅ Connection established
+🔑 Setting up fee payer wallet...
+📝 Fee payer public key: 5YNmS1R9nNSCDzb5a7mMJ1dwK9uHeAAF4CmPEwKgVWr8
+💰 Requesting airdrop of 1 SOL to fee payer...
+📡 Airdrop transaction signature: 2iU3WEenXiUDLR8NBfYv3JdFMYvWUABtXvMibcSXaz4STbeWdcaLSZigG5cNxDLa7xxZT5Zyjh6g3FLU953GBYXf
+⏳ Waiting for airdrop confirmation...
+✅ Airdrop confirmed
+💰 Fee payer balance: 19.95501788 SOL
+🔑 Setting up token owner wallet...
+📝 Token owner public key: G2FAbFQPFa5qKXCetoFZQEvF9BVvCKbvUZvodpVidnoY
+🪙 Using mint address from token-info.json: 3BLwDckxdND2duPD9MShxrELZCouu4i2LMYmRQLQVPHW
+🏦 Creating Associated Token Account (ATA)...
+First trying with TOKEN_PROGRAM_ID...
+🔑 Creating ATA for owner... PublicKey [PublicKey(G2FAbFQPFa5qKXCetoFZQEvF9BVvCKbvUZvodpVidnoY)] {
+  _bn: <BN: df30e6ca0981c1a677eed6f7cb46b2aa442ca9b7a10a10e494badea4b9b6944f>
+}
+📝 Wallet public key: gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD
+✅ Token account created successfully with TOKEN_PROGRAM_ID!
+📝 Associated Token Account address: CUGprhFgtNxiHxBbZCAopzzPMQohcQsT2eUWAGKAoKbE
+💾 Token account information saved to token-account-info.json
+
+✨ Associated Token Account (ATA) created successfully! ✨
+=== Account Details ===
+Token Mint: 3BLwDckxdND2duPD9MShxrELZCouu4i2LMYmRQLQVPHW
+Token Account: CUGprhFgtNxiHxBbZCAopzzPMQohcQsT2eUWAGKAoKbE
+Owner: G2FAbFQPFa5qKXCetoFZQEvF9BVvCKbvUZvodpVidnoY
+
+🎉 Next steps would be to:
+1. Mint tokens to this account
+2. Check your token balance
+
+
+
