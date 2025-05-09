@@ -93,6 +93,10 @@ import {
 import bs58 from "bs58";
 import { getAssociatedTokenAddress } from "@solana/spl-token";
 
+import dotenv from "dotenv";
+dotenv.config();
+
+import { createKeyPairSignerFromBytes } from "gill";
 
 (async () => {
   // connection
@@ -101,19 +105,33 @@ import { getAssociatedTokenAddress } from "@solana/spl-token";
     "confirmed"
   );
 
-  // 5YNmS1R9nNSCDzb5a7mMJ1dwK9uHeAAF4CmPEwKgVWr8
-  const feePayer = Keypair.fromSecretKey(
-    bs58.decode(
-      "588FU4PktJWfGfxtzpAAXywSNt74AvtroVzGfKkVN1LwRuvHwKGr851uH8czM5qm4iqLbs1kKoMKtMJG4ATR7Ld2"
-    )
+  const secretKey = Uint8Array.from(
+    process.env.PVT_KEY_gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD
   );
+
+  // Base58 encode the secret key
+  const base58SecretKey = bs58.encode(secretKey);
+
+// Pass it to createKeyPairSignerFromBytes
+const signer = await createKeyPairSignerFromBytes(bs58.decode(base58SecretKey));
+
+  // 5YNmS1R9nNSCDzb5a7mMJ1dwK9uHeAAF4CmPEwKgVWr8
+  // const feePayer = Keypair.fromSecretKey(
+  //   bs58.decode(
+  //     "588FU4PktJWfGfxtzpAAXywSNt74AvtroVzGfKkVN1LwRuvHwKGr851uH8czM5qm4iqLbs1kKoMKtMJG4ATR7Ld2"
+  //   )
+  // );
+
+  const keypair = Keypair.fromSecretKey(bs58.decode(base58SecretKey));
+const feePayer = keypair;
+
 
   //get fee payer from 
 
   // G2FAbFQPFa5qKXCetoFZQEvF9BVvCKbvUZvodpVidnoY
   const alice = Keypair.fromSecretKey(
     bs58.decode(
-      "4NMwxzmYj2uvHuq8xoqhY8RXg63KSVJM1DXkpbmkUY7YQWuoyQgFnnzn6yo3CMnqZasnNPNuAT2TLwQsCaKkUddp"
+      "4NMwxzmYj2uvHuq8xoqhY8RXg63KSVJhjhM1DXkpbmkUY7YQWuoyQgFnnzn6yo3CMnqZasnNPNuAT2TLwQsCaKkUddp"
     )
   );
 //   const airdropSig = await connection.requestAirdrop(
@@ -123,13 +141,13 @@ import { getAssociatedTokenAddress } from "@solana/spl-token";
 //   await connection.confirmTransaction(airdropSig);
 
   const mintPubkey = new PublicKey(
-    "FBVWtAGCHoDjnexCQ1bW37aSMF1BBzSZukBFdpJzJkx3"
+    "7nMwDDpFEc7PcAnnAmw8njf7o3dWNKvp8FHBabMW455q"
   );
  
   console.log(`mintPubkey: ${mintPubkey}`);
 
   const tokenAccountPubkey = new PublicKey(
-    "FsjxBRaArS145B3cNLf3pj3VCK8q7UN6Mnud42fZZ6BR"
+    "EwCTppEs8y7zuzRHGD54GDWXYwiHxCkvqAKZp8K2T7GZ"
   );
   console.log(`Using token account address: ${tokenAccountPubkey.toBase58()}`);
   console.log(`ATA: ${tokenAccountPubkey.toBase58()}`);

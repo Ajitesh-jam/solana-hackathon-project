@@ -24,17 +24,32 @@ import {
   // @ts-ignore
 } from "gill/programs/token";
 
+
 const { rpc, rpcSubscriptions, sendAndConfirmTransaction } = createSolanaClient(
   {
     urlOrMoniker: "devnet"
   }
 );
 
-const signer = await createKeyPairSignerFromBytes(
-  bs58.decode(
-    "588FU4PktJWfGfxtzpAAXywSNt74AvtroVzGfKkVN1LwRuvHwKGr851uH8czM5qm4iqLbs1kKoMKtMJG4ATR7Ld2"
-  )
-);
+const secretKey = Uint8Array.from(process.env.PVT_KEY_gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD);
+
+// Base58 encode the secret key
+const base58SecretKey = bs58.encode(secretKey);
+
+// Pass it to createKeyPairSignerFromBytes
+const signer = await createKeyPairSignerFromBytes(bs58.decode(base58SecretKey));
+
+console.log("Signer address:", signer.address);
+
+
+// const signer = await createKeyPairSignerFromBytes(
+//   bs58.decode(
+//     "588FU4PktJWfGfxtzpAAXywSNt74AvtroVzGfKkVN1LwRuvHwKGr851uH8czM5qm4iqLbs1kKoMKtMJG4ATR7Ld2"
+    
+//   )
+// );
+
+//const signer = walletKeypair;
 // await airdropFactory({ rpc, rpcSubscriptions })({
 //   commitment: "confirmed",
 //   lamports: lamports(100_000_000n),
@@ -89,20 +104,9 @@ const transaction = createTransaction({
         collection: null,
         creators: null,
         uses: null,
-        name: "super sweet token",
-        symbol: "SST",
-        uri: {
-          "name": "OPOS",
-          "symbol": "OPOS",
-          "description": "Only Possible On Solana",
-          "image": "https://raw.githubusercontent.com/solana-developers/opos-asset/main/assets/Climate/image.png",
-          "attributes": [
-            {
-              "trait_type": "Item",
-              "value": "Climate"
-            }
-          ]
-        }
+        name: "CGS COIN",
+        symbol: "CGS",
+        uri: "https://raw.githubusercontent.com/Ajitesh-jam/solana-hackathon-project/solana-Learn/token/metadata.json"
       }
     })
   ],
@@ -136,3 +140,9 @@ await sendAndConfirmTransaction(signedTransaction);
 
 
 
+//https://raw.githubusercontent.com/Ajitesh-jam/solana-hackathon-project/solana-Learn/token/metadata.json
+//https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/assets/Climate/metadata.json
+
+
+
+//https://raw.githubusercontent.com/solana-developers/opos-asset/main/assets/Climate/metadata.json

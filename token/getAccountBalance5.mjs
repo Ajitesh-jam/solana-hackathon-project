@@ -7,7 +7,7 @@ import { clusterApiUrl, Connection, PublicKey } from "@solana/web3.js";
   );
 
   const tokenAccount = new PublicKey(
-    "H2EtPtNUtEqxdLjxw8kkFytuaVa1TWaCVxgAgkd6m8gB"
+    "EwCTppEs8y7zuzRHGD54GDWXYwiHxCkvqAKZp8K2T7GZ"
   );
 
   let tokenAmount = await connection.getTokenAccountBalance(tokenAccount);

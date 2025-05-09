@@ -8,7 +8,7 @@ import { getAccount } from "@solana/spl-token";
   );
 
   const tokenAccountPubkey = new PublicKey(
-    "FsjxBRaArS145B3cNLf3pj3VCK8q7UN6Mnud42fZZ6BR"
+    "EwCTppEs8y7zuzRHGD54GDWXYwiHxCkvqAKZp8K2T7GZ"
   );
     console.log(`Using token account address: ${tokenAccountPubkey.toBase58()}`);
 

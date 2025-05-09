@@ -9,7 +9,10 @@ import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import { clusterApiUrl } from "@solana/web3.js";
 import "@solana/wallet-adapter-react-ui/styles.css";
+import "@solana/wallet-adapter-react-ui/styles.css";
 
+import Solflare from '@solflare-wallet/sdk';
+import { useEffect } from "react";
 
 function SolanaProvider({ children }) {
   // The network can be set to 'devnet', 'testnet', or 'mainnet-beta'
@@ -21,7 +24,7 @@ function SolanaProvider({ children }) {
   return (
     <ConnectionProvider endpoint={endpoint}>
       <WalletProvider wallets={[]} autoConnect>
-        cks
+        ck
         <WalletModalProvider>{children}</WalletModalProvider>
       </WalletProvider>
     </ConnectionProvider>
@@ -29,17 +32,42 @@ function SolanaProvider({ children }) {
 };
 
 
-import "@solana/wallet-adapter-react-ui/styles.css";
+
 
 export default function RootLayout({
   children
 }) {
+
+  useEffect( () => {
+
+    async function connectWallet() {
+      
+      const wallet = new Solflare();
+      wallet.on('connect', () => {
+          console.log('connected', wallet.publicKey.toString());
+      });
+      wallet.on('disconnect', () => {
+          console.log('disconnected');
+      });
+
+      await wallet.connect();
+
+      console.log('connected', wallet.publicKey.toString());
+      const balance = await wallet.getBalance();
+      console.log('balance', balance);
+    }
+    connectWallet();
+   
+  }, []);
+  
+  
   return (
     <>
     skfn
 
-        <SolanaProvider>{children}</SolanaProvider>
+        {/* <SolanaProvider>{children}</SolanaProvider> */}
     </>
      
   );
 }
+

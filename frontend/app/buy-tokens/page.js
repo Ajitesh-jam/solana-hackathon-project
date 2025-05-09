@@ -6,11 +6,94 @@ import { Button } from "@/components/ui/button"
 import { Slider } from "@/components/ui/slider"
 import { Coins, Wallet, CheckCircle, X } from "lucide-react"
 
+import { clusterApiUrl, Connection, PublicKey, Keypair } from "@solana/web3.js";
+import {
+  createAssociatedTokenAccountIdempotent,
+  mintToChecked,
+  TOKEN_2022_PROGRAM_ID
+,  TOKEN_PROGRAM_ID
+} from "@solana/spl-token";
+import bs58 from "bs58";
+import { getAssociatedTokenAddress } from "@solana/spl-token";
+
+import dotenv from "dotenv";
+dotenv.config();
+
+import { createKeyPairSignerFromBytes } from "gill";
+
+
 export default function BuyTokensPage() {
   const [amount, setAmount] = useState(50)
   const [showConnectModal, setShowConnectModal] = useState(false)
   const [isConnected, setIsConnected] = useState(false)
   const [showSuccessModal, setShowSuccessModal] = useState(false)
+
+  async function buyTokens() {
+      // connection
+      const connection = new Connection(
+        clusterApiUrl("devnet"),
+        "confirmed"
+      );
+
+      const secretKey = Uint8Array.from(
+        process.env.PVT_KEY_gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD
+      );
+
+      // Base58 encode the secret key
+    const base58SecretKey = bs58.encode(secretKey);
+    const signer = await createKeyPairSignerFromBytes(bs58.decode(base58SecretKey));
+    const keypair = Keypair.fromSecretKey(bs58.decode(base58SecretKey));
+    const feePayer = keypair;
+    
+
+
+      //get fee payer from 
+
+      const mintPubkey = new PublicKey(
+        "7nMwDDpFEc7PcAnnAmw8njf7o3dWNKvp8FHBabMW455q"
+      );
+    
+      console.log(`mintPubkey: ${mintPubkey}`);
+
+      const tokenAccountPubkey = new PublicKey(
+        "EwCTppEs8y7zuzRHGD54GDWXYwiHxCkvqAKZp8K2T7GZ"
+      );
+      console.log(`Using token account address: ${tokenAccountPubkey.toBase58()}`);
+      console.log(`ATA: ${tokenAccountPubkey.toBase58()}`);
+
+
+
+        // Get (or create if needed) the correct associated token account
+        const correctTokenAccount = await createAssociatedTokenAccountIdempotent(
+          connection,
+          feePayer,               // fee payer
+          mintPubkey,             // the mint for which the ATA is being created
+          feePayer.publicKey,        // owner of the token account
+          {},                     // default options
+          TOKEN_PROGRAM_ID        // or TOKEN_2022_PROGRAM_ID if you're using Token-2022
+        );
+
+        console.log(`Correct ATA: ${correctTokenAccount.toBase58()}`);
+
+
+      {
+        console.log("minitng to correct token account",correctTokenAccount);
+        let txhash = await mintToChecked(
+          connection,
+          feePayer,
+          mintPubkey,
+          correctTokenAccount,
+          feePayer,  // mint authority
+          6e9,
+          9,
+          undefined,
+          undefined,
+          TOKEN_PROGRAM_ID
+        );
+        
+        console.log(`txhash: ${txhash}`);
+      }
+  }
 
   const handleConnectWallet = () => {
     // Mock wallet connection
@@ -46,6 +129,12 @@ export default function BuyTokensPage() {
       transition: { duration: 0.5 },
     },
   }
+
+
+
+
+
+
 
   return (
     <div className="container mx-auto px-4 py-12">

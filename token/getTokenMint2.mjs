@@ -9,7 +9,7 @@ import { getMint, TOKEN_PROGRAM_ID,TOKEN_2022_PROGRAM_ID } from "@solana/spl-tok
     
     console.log("Connection established");
   const mintAccountPublicKey = new PublicKey(
-    "FBVWtAGCHoDjnexCQ1bW37aSMF1BBzSZukBFdpJzJkx3"
+    "7nMwDDpFEc7PcAnnAmw8njf7o3dWNKvp8FHBabMW455q"
   );
   console.log(`Using mint address: ${mintAccountPublicKey.toBase58()}`);
   console.log("Fetching token information...");

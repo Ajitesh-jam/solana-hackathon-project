@@ -15,18 +15,24 @@ import {
     // @ts-ignore
   } from "gill/programs/token";
   import bs58 from "bs58";
-  
+  import { Keypair } from "@solana/web3.js";
+  import dotenv from "dotenv";
+  dotenv.config();
   const { rpc, rpcSubscriptions, sendAndConfirmTransaction } = createSolanaClient(
     {
       urlOrMoniker: "devnet" // or `mainnet`, `localnet`, etc
     }
   );
   
-  const signer = await createKeyPairSignerFromBytes(
-    bs58.decode(
-      "588FU4PktJWfGfxtzpAAXywSNt74AvtroVzGfKkVN1LwRuvHwKGr851uH8czM5qm4iqLbs1kKoMKtMJG4ATR7Ld2"
-    )
+  const secretKey = Uint8Array.from(
+    process.env.PVT_KEY_gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD
   );
+
+  // Base58 encode the secret key
+  const base58SecretKey = bs58.encode(secretKey);
+
+  // Pass it to createKeyPairSignerFromBytes
+  const signer = await createKeyPairSignerFromBytes(bs58.decode(base58SecretKey));
   console.log("signer:", signer.address);
   // await airdropFactory({ rpc, rpcSubscriptions })({
   //   commitment: "confirmed",
@@ -37,7 +43,7 @@ import {
   const { value: latestBlockhash } = await rpc.getLatestBlockhash().send();
   
   const tokenProgram = TOKEN_PROGRAM_ADDRESS;
-  const mint = address("CvpuqLp2L8VDmdw93Cf2Sdamv9chCgtKHPgqPRKV5Gqe");
+  const mint = address("7nMwDDpFEc7PcAnnAmw8njf7o3dWNKvp8FHBabMW455q");
   
   const destination = address("gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD");
   const destinationAta = await getAssociatedTokenAccountAddress(

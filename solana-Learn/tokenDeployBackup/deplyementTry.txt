@@ -1,0 +1,190 @@
+(base) ajiteshjamulkar@Ajiteshs-MacBook-Pro token % node createtoken1.mjs
+(node:19608) ExperimentalWarning: The Ed25519 Web Crypto API algorithm is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+signer: CBJepUXv4DCqJfTndp1Mp1aNRWc6AqLswA276YeQaUgv
+mint: CvpuqLp2L8VDmdw93Cf2Sdamv9chCgtKHPgqPRKV5Gqe
+
+
+(base) ajiteshjamulkar@Ajiteshs-MacBook-Pro token % node getTokenMint2.mjs
+Connecting to Solana network: devnet
+Connection established
+Using mint address: CvpuqLp2L8VDmdw93Cf2Sdamv9chCgtKHPgqPRKV5Gqe
+Fetching token information...
+{
+  address: PublicKey [PublicKey(CvpuqLp2L8VDmdw93Cf2Sdamv9chCgtKHPgqPRKV5Gqe)] {
+    _bn: <BN: b13a831a7f09d7a71cc8f46bad6fb7fa97f3f10cc641759fc5979df468e646c1>
+  },
+  mintAuthority: PublicKey [PublicKey(CBJepUXv4DCqJfTndp1Mp1aNRWc6AqLswA276YeQaUgv)] {
+    _bn: <BN: a61452d18c9e839a2ece311da587be952bc9f5042676046611b0edd02ad0e1cf>
+  },
+  supply: 0n,
+  decimals: 9,
+  isInitialized: true,
+  freezeAuthority: PublicKey [PublicKey(CBJepUXv4DCqJfTndp1Mp1aNRWc6AqLswA276YeQaUgv)] {
+    _bn: <BN: a61452d18c9e839a2ece311da587be952bc9f5042676046611b0edd02ad0e1cf>
+  },
+  tlvData: <Buffer >
+}
+
+
+(base) ajiteshjamulkar@Ajiteshs-MacBook-Pro token % node createTokenAccount3.mjs
+(node:21973) ExperimentalWarning: The Ed25519 Web Crypto API algorithm is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+signer: 5YNmS1R9nNSCDzb5a7mMJ1dwK9uHeAAF4CmPEwKgVWr8
+ata: {
+  accounts: [
+    {
+      address: '5YNmS1R9nNSCDzb5a7mMJ1dwK9uHeAAF4CmPEwKgVWr8',
+      role: 3,
+      signer: [Object]
+    },
+    {
+      address: 'FsjxBRaArS145B3cNLf3pj3VCK8q7UN6Mnud42fZZ6BR',----------------------
+      role: 1                                                                       |
+    },
+    { address: 'gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD', role: 0 },            |
+    {
+      address: 'CvpuqLp2L8VDmdw93Cf2Sdamv9chCgtKHPgqPRKV5Gqe',                      |
+      role: 0
+    },
+    { address: '11111111111111111111111111111111', role: 0 },                       |
+    { address: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA', role: 0 }             |
+  ],                                                                                |
+  programAddress: 'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL',                   |
+  data: Uint8Array(1) [ 1 ]
+}                                                                                   |
+
+                                                                                    |
+on---->   const tokenAccountPubkey = new PublicKey(                                 |
+    "FsjxBRaArS145B3cNLf3pj3VCK8q7UN6Mnud42fZZ6BR"  <---------------------------------
+  );
+
+
+(base) ajiteshjamulkar@Ajiteshs-MacBook-Pro token % node getTokenAccount4.mjs
+Using token account address: FsjxBRaArS145B3cNLf3pj3VCK8q7UN6Mnud42fZZ6BR
+{
+  address: PublicKey [PublicKey(FsjxBRaArS145B3cNLf3pj3VCK8q7UN6Mnud42fZZ6BR)] {
+    _bn: <BN: dd033902a50e9c645455aacec72e082d49b4c413be1194b6c6ef68dcd994d690>
+  },
+  mint: PublicKey [PublicKey(CvpuqLp2L8VDmdw93Cf2Sdamv9chCgtKHPgqPRKV5Gqe)] {
+    _bn: <BN: b13a831a7f09d7a71cc8f46bad6fb7fa97f3f10cc641759fc5979df468e646c1>
+  },
+  owner: PublicKey [PublicKey(gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD)] {
+    _bn: <BN: a167b633bfc33ec967f3e3ef4bf9a739740a878bc74db83f4fa0cc46945cca6>
+  },
+  amount: 0n,
+  delegate: null,
+  delegatedAmount: 0n,
+  isInitialized: true,
+  isFrozen: false,
+  isNative: false,
+  rentExemptReserve: null,
+  closeAuthority: null,
+  tlvData: <Buffer >
+}
+
+
+(base) ajiteshjamulkar@Ajiteshs-MacBook-Pro token % node getAccountBalance.mjs 
+amount: 0
+decimals: 9
+
+
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+(base) ajiteshjamulkar@Ajiteshs-MacBook-Pro token % node createtoken1.mjs
+(node:28911) ExperimentalWarning: The Ed25519 Web Crypto API algorithm is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+signer: 5YNmS1R9nNSCDzb5a7mMJ1dwK9uHeAAF4CmPEwKgVWr8
+mint: FBVWtAGCHoDjnexCQ1bW37aSMF1BBzSZukBFdpJzJkx3
+
+
+(base) ajiteshjamulkar@Ajiteshs-MacBook-Pro token % node getTokenMint2.mjs 
+Connecting to Solana network: devnet
+Connection established
+Using mint address: FBVWtAGCHoDjnexCQ1bW37aSMF1BBzSZukBFdpJzJkx3
+Fetching token information...
+{
+  address: PublicKey [PublicKey(FBVWtAGCHoDjnexCQ1bW37aSMF1BBzSZukBFdpJzJkx3)] {
+    _bn: <BN: d2b3aad4b4ff77337d6633da79bba3771b7faf9270e24d42c3c801a797db141c>
+  },
+  mintAuthority: PublicKey [PublicKey(5YNmS1R9nNSCDzb5a7mMJ1dwK9uHeAAF4CmPEwKgVWr8)] {
+    _bn: <BN: 43785d1e4251c7e7c74b46e5404bfc692b9887d45cb32c81aeb51aba5a145345>
+  },
+  supply: 0n,
+  decimals: 9,
+  isInitialized: true,
+  freezeAuthority: PublicKey [PublicKey(5YNmS1R9nNSCDzb5a7mMJ1dwK9uHeAAF4CmPEwKgVWr8)] {
+    _bn: <BN: 43785d1e4251c7e7c74b46e5404bfc692b9887d45cb32c81aeb51aba5a145345>
+  },
+  tlvData: <Buffer >
+}
+
+
+
+(base) ajiteshjamulkar@Ajiteshs-MacBook-Pro token % node createATA3.mjs 
+(node:29188) ExperimentalWarning: The Ed25519 Web Crypto API algorithm is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+signer: 5YNmS1R9nNSCDzb5a7mMJ1dwK9uHeAAF4CmPEwKgVWr8
+ata: {
+  accounts: [
+    {
+      address: '5YNmS1R9nNSCDzb5a7mMJ1dwK9uHeAAF4CmPEwKgVWr8',
+      role: 3,
+      signer: [Object]
+    },
+    {
+      address: 'FsjxBRaArS145B3cNLf3pj3VCK8q7UN6Mnud42fZZ6BR',
+      role: 1
+    },
+    { address: 'gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD', role: 0 },
+    {
+      address: 'CvpuqLp2L8VDmdw93Cf2Sdamv9chCgtKHPgqPRKV5Gqe',
+      role: 0
+    },
+    { address: '11111111111111111111111111111111', role: 0 },
+    { address: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA', role: 0 }
+  ],
+  programAddress: 'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL',
+  data: Uint8Array(1) [ 1 ]
+}
+
+
+
+(base) ajiteshjamulkar@Ajiteshs-MacBook-Pro token % node getTokenAccount4.mjs 
+Using token account address: FsjxBRaArS145B3cNLf3pj3VCK8q7UN6Mnud42fZZ6BR
+{
+  address: PublicKey [PublicKey(FsjxBRaArS145B3cNLf3pj3VCK8q7UN6Mnud42fZZ6BR)] {
+    _bn: <BN: dd033902a50e9c645455aacec72e082d49b4c413be1194b6c6ef68dcd994d690>
+  },
+  mint: PublicKey [PublicKey(CvpuqLp2L8VDmdw93Cf2Sdamv9chCgtKHPgqPRKV5Gqe)] {
+    _bn: <BN: b13a831a7f09d7a71cc8f46bad6fb7fa97f3f10cc641759fc5979df468e646c1>
+  },
+  owner: PublicKey [PublicKey(gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD)] {
+    _bn: <BN: a167b633bfc33ec967f3e3ef4bf9a739740a878bc74db83f4fa0cc46945cca6>
+  },
+  amount: 0n,
+  delegate: null,
+  delegatedAmount: 0n,
+  isInitialized: true,
+  isFrozen: false,
+  isNative: false,
+  rentExemptReserve: null,
+  closeAuthority: null,
+  tlvData: <Buffer >
+}
+
+
+
+
+(base) ajiteshjamulkar@Ajiteshs-MacBook-Pro token % node mintTokens6.mjs 
+mintPubkey: FBVWtAGCHoDjnexCQ1bW37aSMF1BBzSZukBFdpJzJkx3
+Using token account address: FsjxBRaArS145B3cNLf3pj3VCK8q7UN6Mnud42fZZ6BR
+ATA: FsjxBRaArS145B3cNLf3pj3VCK8q7UN6Mnud42fZZ6BR
+Correct ATA: C32nMvM4d8fkdf8VcLALm5CuX7CxoyhJMZd5PJptJjy5
+minitng to correct token account PublicKey [PublicKey(C32nMvM4d8fkdf8VcLALm5CuX7CxoyhJMZd5PJptJjy5)] {
+  _bn: <BN: a3f5bb99a537d5a7ffbaa69b82bc640cc30086fbdea017f2d8dc1fbbb2e7b114>
+}
+txhash: 2tY6UFmuZc48xKdHAmXiq3qcBTXXiuDVjHKGJJoGekWXPUEKmtfxKg1WoDuR9wQdUBuyxiGuAVtLevb8iYZekPow

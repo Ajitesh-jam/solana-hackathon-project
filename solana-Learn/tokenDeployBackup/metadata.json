@@ -1,0 +1,13 @@
+{
+    "name": "CGS_COIN",
+    "symbol": "CGS",
+    "description": "Gaming currency for CGS metaverse and Revive",
+    "image": "https://gymkhana.iitkgp.ac.in/data/media/images/societies/cgs.png",
+    "attributes": [
+      {
+        "trait_type": "Item",
+        "value": "Gaming"
+      }
+    ]
+  }
+  
