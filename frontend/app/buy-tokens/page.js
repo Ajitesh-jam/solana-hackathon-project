@@ -810,7 +810,7 @@ import "@solana/wallet-adapter-react-ui/styles.css";
   );
 }
 
-// We don't need the wallet providers to be inside the component
+
 export default function  WalletConnectionProvider ({ children }) {
   const endpoint = useMemo(() => clusterApiUrl("devnet"), []);
   const wallets = useMemo(() => [], []); // Add specific wallets here if needed
