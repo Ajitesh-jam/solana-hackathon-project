@@ -7,7 +7,7 @@ import { NextResponse } from 'next/server';
 export async function POST(req) {
   try {
     const body = await req.json();
-    const { roomCode, hostPlayerWalletAddress, hostPlayerName, stakeAmount, isPrivateRoom } = body;
+    const { roomCode, hostPlayerWalletAddress, hostPlayerName, stakeAmount, isPrivateRoom,gameId } = body;
 
     if (
       !roomCode ||
@@ -24,9 +24,8 @@ export async function POST(req) {
       hostPlayerWalletAddress,
       hostPlayerName,
       stakeAmount,
-      joinedPlayerWalletAddress: null,
-      joinedPlayerName: null,
       isPrivateRoom,
+      gameId
     });
 
     return NextResponse.json({ message: 'Room hosted successfully' }, { status: 200 });
