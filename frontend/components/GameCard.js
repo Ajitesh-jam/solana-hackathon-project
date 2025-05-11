@@ -5,9 +5,32 @@ import Image from "next/image"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
+import JSZip from "jszip";
 
 export default function GameCard({ game, index }) {
   const [isHovered, setIsHovered] = useState(false)
+      const zip = new JSZip(); // instance of JSZip
+
+    // Function for make zip file and download it
+
+    async function handleZip(){
+
+
+      const zip = new JSZip();
+      const fileName = game.downloadLink.split('/').pop(); // Extract the file name from the URL
+      const fileUrl = game.downloadLink; // URL of the file to be downloaded
+      const response = await fetch(fileUrl);
+      const blob = await response.blob();
+      zip.file(fileName, blob);
+      const content = await zip.generateAsync({ type: "blob" });
+      const downloadLink = document.createElement("a");
+      downloadLink.href = URL.createObjectURL(content);
+      downloadLink.download = fileName;
+      downloadLink.click();
+      URL.revokeObjectURL(downloadLink.href); // Clean up the URL object
+
+
+    }
 
   return (
     <motion.div
@@ -40,6 +63,13 @@ export default function GameCard({ game, index }) {
             Play Now
           </Button>
         </Link>
+        <br></br>
+        <br></br>
+
+        <Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700" onClick={handleZip}>
+          Download
+        </Button>
+        <br></br>
       </div>
 
       {isHovered && (

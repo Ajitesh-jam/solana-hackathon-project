@@ -1,10 +1,11 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Wallet, User, Trophy, Clock, Edit } from "lucide-react"
+import useUsers from "@/hooks/users.zustand"
 
 export default function ProfilePage() {
   // Mock user data
@@ -18,6 +19,19 @@ export default function ProfilePage() {
     wins: 28,
     losses: 14,
   })
+  const userfetched = useUsers((state) => state.selectedUser)
+  console.log("userfetched", userfetched)
+  useEffect(() => {
+    //just change player name to userfetched.playeName else keep same 
+    if (userfetched) {
+      setUser((prev) => ({
+        ...prev,
+        playerName: userfetched.playerName
+      }))
+    }
+  }, [userfetched])
+    
+
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -63,7 +77,7 @@ export default function ProfilePage() {
             </div>
 
             <div className="flex-1 text-center md:text-left">
-              <h1 className="text-3xl font-bold mb-2">{user.name}</h1>
+              <h1 className="text-3xl font-bold mb-2">{user.playerName}</h1>
               <div className="flex flex-col md:flex-row gap-4 text-gray-400">
                 <div className="flex items-center justify-center md:justify-start">
                   <Wallet className="h-4 w-4 mr-2 text-purple-400" />
@@ -71,7 +85,7 @@ export default function ProfilePage() {
                 </div>
                 <div className="flex items-center justify-center md:justify-start">
                   <Clock className="h-4 w-4 mr-2 text-purple-400" />
-                  <span>Joined {new Date(user.joinedDate).toLocaleDateString()}</span>
+                  
                 </div>
               </div>
             </div>

@@ -13,6 +13,7 @@ const games = [
     description: "Intense multiplayer battles with strategic gameplay and high stakes rewards.",
     image: "/placeholder.svg?height=600&width=800",
     link: "/games/solanabattlefield",
+    downloadLink:"/multi.zip"
   },
   {
     id: "solanaops",
@@ -20,6 +21,7 @@ const games = [
     description: "Tactical team-based missions with real-time combat and blockchain rewards.",
     image: "/placeholder.svg?height=600&width=800",
     link: "/games/solanaops",
+    downloadLink:"/multi.zip"
   },
   {
     id: "callofduty",
@@ -27,6 +29,7 @@ const games = [
     description: "The legendary FPS now with Solana integration. Stake, play, and earn.",
     image: "/placeholder.svg?height=600&width=800",
     link: "/games/callofduty",
+    downloadLink:"/multi.zip"
   },
 ]
 

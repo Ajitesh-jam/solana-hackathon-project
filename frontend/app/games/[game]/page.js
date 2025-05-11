@@ -12,6 +12,7 @@ import { Wallet, Lock, Unlock, AlertCircle } from "lucide-react";
 import RoomCard from "@/components/RoomCard";
 import ConnectWalletModal from "@/components/ConnectWalletModal";
 import SuccessModal from "@/components/SuccessModal";
+import JSZip from "jszip";
 
 import { Coins, CheckCircle, X } from "lucide-react";
 import { useEffect, useMemo } from "react";
@@ -48,19 +49,22 @@ const games = {
     name: "Solana Battlefield",
     description:
       "Intense multiplayer battles with strategic gameplay and high stakes rewards.",
-    link: "https://example.com/solanabattlefield",
+    link: "unitydl://mylink",
+    downloadLink: "/multi.zip",
   },
   solanaops: {
     name: "Solana Ops",
     description:
-      "Tactical team-based missions with real-time combat and blockchain rewards.",
+    "Tactical team-based missions with real-time combat and blockchain rewards.",
     link: "https://example.com/solanaops",
+    downloadLink: "/multi.zip",
   },
   callofduty: {
     name: "Call of Duty",
     description:
-      "The legendary FPS now with Solana integration. Stake, play, and earn.",
+    "The legendary FPS now with Solana integration. Stake, play, and earn.",
     link: "https://example.com/callofduty",
+    downloadLink: "/multi.zip",
   },
 };
 
@@ -73,6 +77,25 @@ function GamePage() {
     link: "#",
   };
   const user = useUsers((state) => state.selectedUser);
+
+    async function handleZip(){
+
+
+      const zip = new JSZip();
+      const fileName = game.downloadLink.split('/').pop(); // Extract the file name from the URL
+      const fileUrl = game.downloadLink; // URL of the file to be downloaded
+      const response = await fetch(fileUrl);
+      const blob = await response.blob();
+      zip.file(fileName, blob);
+      const content = await zip.generateAsync({ type: "blob" });
+      const downloadLink = document.createElement("a");
+      downloadLink.href = URL.createObjectURL(content);
+      downloadLink.download = fileName;
+      downloadLink.click();
+      URL.revokeObjectURL(downloadLink.href); // Clean up the URL object
+
+
+    }
 
   const [Rooms, setRooms] = useState( [
   {
@@ -257,48 +280,48 @@ function GamePage() {
     // }
     //console.log("Token transfer successful, signature:", transferSignature);
 
-    if(modalType === "join" && selectedRoom){
-      console.log("Joining room:", selectedRoom.roomCode);
-      const lobbyCode = selectedRoom.roomCode;
-      console.log("Joining room with code:", lobbyCode);
+    // if(modalType === "join" && selectedRoom){
+    //   console.log("Joining room:", selectedRoom.roomCode);
+    //   const lobbyCode = selectedRoom.roomCode;
+    //   console.log("Joining room with code:", lobbyCode);
 
 
-      const response = await fetch("/api/joinRoom", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          roomCode: lobbyCode,
-          joinedPlayerWalletAddress: publicKey.toString(),
-          joinedPlayerName: user.playerName,
-        }),
-      });
-      const data = await response.json();
-      console.log("Join Game Response:", data);
-      setShowSuccessModal(true);
-      return;
-    }
+    //   const response = await fetch("/api/joinRoom", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({
+    //       roomCode: lobbyCode,
+    //       joinedPlayerWalletAddress: publicKey.toString(),
+    //       joinedPlayerName: user.playerName,
+    //     }),
+    //   });
+    //   const data = await response.json();
+    //   console.log("Join Game Response:", data);
+    //   setShowSuccessModal(true);
+    //   return;
+    // }
     
-    console.log("Hosting room with code:", lobbyCode);
+    // console.log("Hosting room with code:", lobbyCode);
 
-    //call api to host -> url -> /api/hostRoom
-    const response = await fetch("/api/hostRoom", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        roomCode: lobbyCode,
-        hostPlayerWalletAddress: publicKey.toString(),
-        hostPlayerName: user.playerName,
-        stakeAmount: stakeAmount,
-        isPrivateRoom: isPrivate,
-        gameId: gameId,
-      }),
-    });
-    const data = await response.json();
-    console.log("Host Game Response:", data);
+    // //call api to host -> url -> /api/hostRoom
+    // const response = await fetch("/api/hostRoom", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     roomCode: lobbyCode,
+    //     hostPlayerWalletAddress: publicKey.toString(),
+    //     hostPlayerName: user.playerName,
+    //     stakeAmount: stakeAmount,
+    //     isPrivateRoom: isPrivate,
+    //     gameId: gameId,
+    //   }),
+    // });
+    // const data = await response.json();
+    // console.log("Host Game Response:", data);
     setShowSuccessModal(true);
     return;
   };
@@ -322,9 +345,11 @@ function GamePage() {
 
     // If it was a host game, redirect to game link
     if (modalType === "host") {
-      window.open(game.link, "_blank");
+      const link = game.link +"player_id=" + user.playerName +  "?roomCode=" + lobbyCode + "&stakeAmount=" + stakeAmount +"&wallet_address="+publicKey.toString() ;//unitydl://mylink?player_id=1234&wallet_address=1312321&name=vedant
+      window.open(link, "_blank");
     } else if (modalType === "join" && selectedRoom) {
-      window.open(game.link, "_blank");
+      const link = game.link +"player_id=" + user.playerName +  "?roomCode=" + lobbyCode + "&stakeAmount=" + stakeAmount +"&wallet_address="+publicKey.toString() ;//unitydl://mylink?player_id=1234&wallet_address=1312321&name=vedant
+      window.open(link, "_blank");
     }
   };
   const [isConnecting, setIsConnecting] = useState(false)
@@ -352,6 +377,8 @@ function GamePage() {
         {game.description}
       </motion.p>
 
+      
+
       <Tabs defaultValue="host" className="w-full">
         <TabsList className="grid w-full max-w-md grid-cols-2 mb-8">
           <TabsTrigger value="host" className="text-lg py-3">
@@ -362,6 +389,9 @@ function GamePage() {
           </TabsTrigger>
         </TabsList>
 
+
+        
+
         <TabsContent value="host" className="space-y-8">
           <motion.div
             className="bg-gray-800/50 border border-purple-900/30 rounded-xl p-6"
@@ -371,11 +401,21 @@ function GamePage() {
           >
             <h2 className="text-2xl font-bold mb-4">Instructions</h2>
             <p className="text-gray-300 mb-6">
+              Download the game and install it. Once installed, you can host a game
+              by entering a unique room code. You can choose to make the game private
+              or public. If you choose private, only players with the code can join.
+
+
               Choose any lobby code and stake some amount to play. You will be
               redirected to the game. Wait for someone to join the room and play
               the game. If you win, you can claim your reward from the rewards
               page, else you will lose all stake.
             </p>
+               <Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700" onClick={handleZip}>
+                Download
+              </Button>
+              <br></br>
+              <br></br>
 
             <div className="space-y-6">
               <div>
