@@ -16,7 +16,6 @@ export default function Sidebar() {
 
   const menuItems = [
     { name: "Home", icon: Home, path: "/" },
-    { name: "Games", icon: GamepadIcon, path: "/games" },
     { name: "Buy Tokens", icon: Coins, path: "/buy-tokens" },
     { name: "Rewards", icon: Award, path: "/rewards" },
     { name: "Profile", icon: User, path: "/profile" },

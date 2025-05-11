@@ -39,6 +39,9 @@ import {
   createAssociatedTokenAccountInstruction,
   createTransferInstruction
 } from '@solana/spl-token';
+
+import useUsers
+ from "@/hooks/users.zustand";
 // Game data
 const games = {
   solanabattlefield: {
@@ -69,6 +72,7 @@ function GamePage() {
     description: "",
     link: "#",
   };
+  const user = useUsers((state) => state.selectedUser);
 
   const [Rooms, setRooms] = useState( [
   {
@@ -267,7 +271,7 @@ function GamePage() {
         body: JSON.stringify({
           roomCode: lobbyCode,
           joinedPlayerWalletAddress: publicKey.toString(),
-          joinedPlayerName: "joinedPlayerName"
+          joinedPlayerName: user.playerName,
         }),
       });
       const data = await response.json();
@@ -287,7 +291,7 @@ function GamePage() {
       body: JSON.stringify({
         roomCode: lobbyCode,
         hostPlayerWalletAddress: publicKey.toString(),
-        hostPlayerName: "YourName",
+        hostPlayerName: user.playerName,
         stakeAmount: stakeAmount,
         isPrivateRoom: isPrivate,
         gameId: gameId,
