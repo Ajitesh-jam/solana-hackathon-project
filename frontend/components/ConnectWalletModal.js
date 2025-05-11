@@ -10,6 +10,7 @@ export default function ConnectWalletModal({ isOpen, onClose, onConnect, modalTy
 
   const handleConnect = () => {
     setIsConnecting(true)
+    console.log("Connecting to wallet...")
 
     // Mock wallet connection
     setTimeout(() => {

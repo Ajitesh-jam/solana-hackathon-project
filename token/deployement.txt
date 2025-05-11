@@ -1,0 +1,130 @@
+(base) ajiteshjamulkar@Ajiteshs-MacBook-Pro token % node createtoken1.mjs
+(node:12915) ExperimentalWarning: The Ed25519 Web Crypto API algorithm is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+Signer address: gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD
+signer: gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD
+mint: 7nMwDDpFEc7PcAnnAmw8njf7o3dWNKvp8FHBabMW455q
+
+
+(base) ajiteshjamulkar@Ajiteshs-MacBook-Pro token % node getTokenMint2.mjs 
+Connecting to Solana network: devnet
+Connection established
+Using mint address: 7nMwDDpFEc7PcAnnAmw8njf7o3dWNKvp8FHBabMW455q
+Fetching token information...
+{
+  address: PublicKey [PublicKey(7nMwDDpFEc7PcAnnAmw8njf7o3dWNKvp8FHBabMW455q)] {
+    _bn: <BN: 64c4edca71fcf242c5039c15406af82374dcac6657021ececc9972407dab0870>
+  },
+  mintAuthority: PublicKey [PublicKey(gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD)] {
+    _bn: <BN: a167b633bfc33ec967f3e3ef4bf9a739740a878bc74db83f4fa0cc46945cca6>
+  },
+  supply: 0n,
+  decimals: 9,
+  isInitialized: true,
+  freezeAuthority: PublicKey [PublicKey(gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD)] {
+    _bn: <BN: a167b633bfc33ec967f3e3ef4bf9a739740a878bc74db83f4fa0cc46945cca6>
+  },
+  tlvData: <Buffer >
+}
+
+
+
+
+(base) ajiteshjamulkar@Ajiteshs-MacBook-Pro token % node createATA3.mjs 
+(node:13889) ExperimentalWarning: The Ed25519 Web Crypto API algorithm is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+signer: gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD
+ata: {
+  accounts: [
+    {
+      address: 'gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD',
+      role: 3,
+      signer: [Object]
+    },
+    {
+      address: 'EwCTppEs8y7zuzRHGD54GDWXYwiHxCkvqAKZp8K2T7GZ',
+      role: 1
+    },
+    { address: 'gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD', role: 0 },
+    {
+      address: '7nMwDDpFEc7PcAnnAmw8njf7o3dWNKvp8FHBabMW455q',
+      role: 0
+    },
+    { address: '11111111111111111111111111111111', role: 0 },
+    { address: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA', role: 0 }
+  ],
+  programAddress: 'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL',
+  data: Uint8Array(1) [ 1 ]
+}
+
+
+
+
+(base) ajiteshjamulkar@Ajiteshs-MacBook-Pro token % node getTokenAccount4.mjs 
+Using token account address: EwCTppEs8y7zuzRHGD54GDWXYwiHxCkvqAKZp8K2T7GZ
+{
+  address: PublicKey [PublicKey(EwCTppEs8y7zuzRHGD54GDWXYwiHxCkvqAKZp8K2T7GZ)] {
+    _bn: <BN: cf0a4121104130afe0112693e50a6588bbfc3ba579717b28964da5ca3c67edfe>
+  },
+  mint: PublicKey [PublicKey(7nMwDDpFEc7PcAnnAmw8njf7o3dWNKvp8FHBabMW455q)] {
+    _bn: <BN: 64c4edca71fcf242c5039c15406af82374dcac6657021ececc9972407dab0870>
+  },
+  owner: PublicKey [PublicKey(gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD)] {
+    _bn: <BN: a167b633bfc33ec967f3e3ef4bf9a739740a878bc74db83f4fa0cc46945cca6>
+  },
+  amount: 0n,
+  delegate: null,
+  delegatedAmount: 0n,
+  isInitialized: true,
+  isFrozen: false,
+  isNative: false,
+  rentExemptReserve: null,
+  closeAuthority: null,
+  tlvData: <Buffer >
+}
+
+
+
+(base) ajiteshjamulkar@Ajiteshs-MacBook-Pro token % node getAccountBalance5.mjs
+token acc :  PublicKey [PublicKey(EwCTppEs8y7zuzRHGD54GDWXYwiHxCkvqAKZp8K2T7GZ)] {
+  _bn: <BN: cf0a4121104130afe0112693e50a6588bbfc3ba579717b28964da5ca3c67edfe>
+}
+amount: 0
+decimals: 9
+
+
+
+(base) ajiteshjamulkar@Ajiteshs-MacBook-Pro token % node mintTokens6.mjs
+(node:16765) ExperimentalWarning: The Ed25519 Web Crypto API algorithm is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+mintPubkey: 7nMwDDpFEc7PcAnnAmw8njf7o3dWNKvp8FHBabMW455q
+Using token account address: EwCTppEs8y7zuzRHGD54GDWXYwiHxCkvqAKZp8K2T7GZ
+ATA: EwCTppEs8y7zuzRHGD54GDWXYwiHxCkvqAKZp8K2T7GZ
+Correct ATA: EwCTppEs8y7zuzRHGD54GDWXYwiHxCkvqAKZp8K2T7GZ
+minitng to correct token account PublicKey [PublicKey(EwCTppEs8y7zuzRHGD54GDWXYwiHxCkvqAKZp8K2T7GZ)] {
+  _bn: <BN: cf0a4121104130afe0112693e50a6588bbfc3ba579717b28964da5ca3c67edfe>
+}
+txhash: 2YSchz9CNbbFg87jrv2ohoUGxHZn4PUJgmJNvUBEHCuL677NHqeyPvKkvEzyKzMUrPxnsXurvxfJJQfxMUzkeH9g
+
+
+
+(base) ajiteshjamulkar@Ajiteshs-MacBook-Pro token % node sendTokens7.mjs
+(node:17519) ExperimentalWarning: The Ed25519 Web Crypto API algorithm is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+destinationAta: AckJTcwA8HmZMox9XTPmw6pBwXk3877MXAkcRLFnN5eh
+sourceAta: EwCTppEs8y7zuzRHGD54GDWXYwiHxCkvqAKZp8K2T7GZ
+Start transaction
+
+
+
+
+(base) ajiteshjamulkar@Ajiteshs-MacBook-Pro token % node burnToken8.mjs
+Creating mint...
+Mint created: AnYfKhFykn5eG11H286dnbx6pcP1jApQdZoeUkM1AfhW
+Creating token account...
+Token account: 6GQ6f8YKMCgr4dDpALAZeMZUferbPQ3FS2adAxtPt4ho
+Minting tokens...
+Mint transaction: 4pwfy56CvCJ2XJPLn3h43sa42p1iLve7dAHWYSZqxzaqpgvBdATAh4N4r9i48kw2wnV3ZU9rYw4ip6wFqH8DmXHi
+Burning tokens...
+Burn transaction: 4zdBiLFbkFX97K4U7mLWMpm7Re9WcQC3Aut4okUbNMkwsCu8SBodacByre62cjvQmFACJbL3HtCDbZrqR9Uu8v2e
+

@@ -1,89 +1,334 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useParams } from "next/navigation"
-import { motion } from "framer-motion"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Switch } from "@/components/ui/switch"
-import { Wallet, Lock, Unlock, AlertCircle } from "lucide-react"
-import RoomCard from "@/components/RoomCard"
-import ConnectWalletModal from "@/components/ConnectWalletModal"
-import SuccessModal from "@/components/SuccessModal"
+import { use, useState } from "react";
+import { useParams } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { Wallet, Lock, Unlock, AlertCircle } from "lucide-react";
+import RoomCard from "@/components/RoomCard";
+import ConnectWalletModal from "@/components/ConnectWalletModal";
+import SuccessModal from "@/components/SuccessModal";
 
-// Mock data for rooms
-const mockRooms = [
-  { id: 1, code: "GAME123", stake: 50, hostWallet: "Wallet123", hostUserName: "Player1", isPrivate: false },
-  { id: 2, code: "BATTLE456", stake: 100, hostWallet: "Wallet456", hostUserName: "CryptoGamer", isPrivate: false },
-  { id: 3, code: "SOLANA789", stake: 75, hostWallet: "Wallet789", hostUserName: "BlockchainWarrior", isPrivate: true },
-  { id: 4, code: "WAR2022", stake: 200, hostWallet: "Wallet101", hostUserName: "TokenMaster", isPrivate: false },
-]
+import { Coins, CheckCircle, X } from "lucide-react";
+import { useEffect, useMemo } from "react";
+import {
+  ConnectionProvider,
+  WalletProvider,
+  useConnection,
+  useWallet,
+} from "@solana/wallet-adapter-react";
+import {
+  WalletModalProvider,
+  WalletMultiButton,
+} from "@solana/wallet-adapter-react-ui";
+import {
+  clusterApiUrl,
+  PublicKey,
+} from "@solana/web3.js";
+import "@solana/wallet-adapter-react-ui/styles.css";
+ import {  
+  Transaction 
+} from '@solana/web3.js';
 
+import {
+  getAssociatedTokenAddress,
+  createAssociatedTokenAccountInstruction,
+  createTransferInstruction
+} from '@solana/spl-token';
 // Game data
 const games = {
   solanabattlefield: {
     name: "Solana Battlefield",
-    description: "Intense multiplayer battles with strategic gameplay and high stakes rewards.",
+    description:
+      "Intense multiplayer battles with strategic gameplay and high stakes rewards.",
     link: "https://example.com/solanabattlefield",
   },
   solanaops: {
     name: "Solana Ops",
-    description: "Tactical team-based missions with real-time combat and blockchain rewards.",
+    description:
+      "Tactical team-based missions with real-time combat and blockchain rewards.",
     link: "https://example.com/solanaops",
   },
   callofduty: {
     name: "Call of Duty",
-    description: "The legendary FPS now with Solana integration. Stake, play, and earn.",
+    description:
+      "The legendary FPS now with Solana integration. Stake, play, and earn.",
     link: "https://example.com/callofduty",
   },
-}
+};
 
-export default function GamePage() {
-  const params = useParams()
-  const gameId = params.game
-  const game = games[gameId] || { name: "Game Not Found", description: "", link: "#" }
+function GamePage() {
+  const params = useParams();
+  const gameId = params.game;
+  const game = games[gameId] || {
+    name: "Game Not Found",
+    description: "",
+    link: "#",
+  };
 
-  const [lobbyCode, setLobbyCode] = useState("")
-  const [stakeAmount, setStakeAmount] = useState("")
-  const [isPrivate, setIsPrivate] = useState(false)
-  const [showWalletModal, setShowWalletModal] = useState(false)
-  const [showSuccessModal, setShowSuccessModal] = useState(false)
-  const [modalType, setModalType] = useState("host") // 'host' or 'join'
-  const [selectedRoom, setSelectedRoom] = useState(null)
+  const [Rooms, setRooms] = useState( [
+  {
+    id: 1,
+    roomCode: "GAME123",
+    stakeAmount: 50,
+    hostPlayerWalletAddress: "Wallet123",
+    hostPlayerName: "Player1",
+    isPrivate: false,
+  },
+  {
+    id: 2,
+    roomCode: "BATTLE456",
+    stakeAmount: 100,
+    hostPlayerWalletAddress: "Wallet456",
+    hostPlayerName: "CryptoGamer",
+    isPrivate: false,
+  },
+  {
+    id: 3,
+    roomCode: "SOLANA789",
+    stakeAmount: 75,
+    hostPlayerWalletAddress: "Wallet789",
+    hostPlayerName: "BlockchainWarrior",
+    isPrivate: true,
+  },
+  {
+    id: 4,
+    roomCode: "WAR2022",
+    stakeAmount: 200,
+    hostPlayerWalletAddress: "Wallet101",
+    hostPlayerName: "TokenMaster",
+    isPrivate: false,
+  },
+  ]);
 
-  const handleHostGame = () => {
-    setModalType("host")
-    setShowWalletModal(true)
+  const [lobbyCode, setLobbyCode] = useState("");
+  const [stakeAmount, setStakeAmount] = useState("");
+  const [isPrivate, setIsPrivate] = useState(false);
+  const [showWalletModal, setShowWalletModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [modalType, setModalType] = useState("host"); // 'host' or 'join'
+  const [selectedRoom, setSelectedRoom] = useState(null);
+
+  const { publicKey, sendTransaction } = useWallet();
+  const { connection } = useConnection();
+  const [cgsCoins, setCgsCoins] = useState(0);
+
+  useEffect(() => {
+    async function fetchGame(){
+      console.log("Fetching game data...",gameId);
+      const gameData = games[gameId];
+      if (!gameData) {
+        console.error("Game not found");
+        return;
+      }
+      console.log("Game data:", gameData);
+      
+      const response = await fetch("/api/getGameByGameId", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          gameId: gameId,
+        }),
+      });
+      const data = await response.json();
+      console.log("fehtc  Game Response:", data);
+      setRooms(data);
+    }
+    fetchGame();
   }
+  , [gameId]);
 
-  const handleJoinRoom = (room) => {
-    setModalType("join")
-    setSelectedRoom(room)
-    setShowWalletModal(true)
-  }
+  useEffect(() => {
+    const getCustomTokenBalance = async () => {
+      if (!publicKey || !connection) {
+        console.error("Wallet not connected");
+        return;
+      }
+  
+      try {
+        const mintAddress = new PublicKey("7nMwDDpFEc7PcAnnAmw8njf7o3dWNKvp8FHBabMW455q");
+        const ata = await getAssociatedTokenAddress(mintAddress, publicKey);
+        const tokenAccount = await connection.getTokenAccountBalance(ata);
+        console.log(`Custom Token Balance: ${tokenAccount.value.uiAmount}`);
+        setCgsCoins(tokenAccount.value.uiAmount);
+      } catch (err) {
+        console.error("Error fetching custom token balance:", err);
+      }
+    };
+    if (publicKey) {
+      console.log("Public Key:", publicKey.toString());
+      getCustomTokenBalance();
+    }
+  }, [publicKey, connection]);
 
-  const handleWalletConnect = () => {
-    setShowWalletModal(false)
+  async function transferTokens() {
+    if (!publicKey) {
+      alert("Please connect your wallet first.");
+      return;
+    }
+    
+    try {
+      
+      const mint = new PublicKey("7nMwDDpFEc7PcAnnAmw8njf7o3dWNKvp8FHBabMW455q");
+      const destination = new PublicKey("gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD");    //Owner wallet address
+      
+      const sourceAta = await getAssociatedTokenAddress(
+        mint,
+        publicKey
+      );
+      const destinationAta = await getAssociatedTokenAddress(
+        mint,
+        destination
+      );
+      
 
-    // Mock wallet connection and transaction
-    setTimeout(() => {
-      setShowSuccessModal(true)
-    }, 500)
-  }
-
-  const handleSuccessClose = () => {
-    setShowSuccessModal(false)
-
-    // If it was a host game, redirect to game link
-    if (modalType === "host") {
-      window.open(game.link, "_blank")
-    } else if (modalType === "join" && selectedRoom) {
-      window.open(game.link, "_blank")
+      const destinationAccount = await connection.getAccountInfo(destinationAta);
+      const instructions = [];
+      
+      if (!destinationAccount) {
+        instructions.push(
+          createAssociatedTokenAccountInstruction(
+            publicKey, // payer
+            destinationAta, // ata
+            destination, // owner
+            mint // mint
+          )
+        );
+      }
+      
+      // Add transfer instruction
+      instructions.push(
+        createTransferInstruction(
+          sourceAta, // source
+          destinationAta, // destination
+          publicKey, // owner (authority)
+          stakeAmount * (10 ** 9) // amount with decimals (assuming 9 decimals)
+        )
+      );
+      
+      // Create transaction
+      const transaction = new Transaction().add(...instructions);
+      
+      // Get latest blockhash
+      const { blockhash } = await connection.getLatestBlockhash();
+      transaction.recentBlockhash = blockhash;
+      transaction.feePayer = publicKey;
+      
+      // Send transaction
+      const signature = await sendTransaction(transaction, connection);
+      
+      // Wait for confirmation
+      const confirmation = await connection.confirmTransaction(signature, 'confirmed');
+      
+      console.log('Transaction confirmed:', signature);
+      alert(`Transfer successful! Transaction signature: ${signature}`);
+      
+      return signature;
+    } catch (error) {
+      console.error('Error transferring tokens:', error);
+      alert(`Error: ${error.message}`);
     }
   }
 
+  const handleGame = async () => {
+    if (!publicKey) {
+      alert("Please connect your wallet first.");
+      return;
+    }
+    console.log("Public Key:", publicKey.toString());
+    setShowWalletModal(false);
+
+
+    // Transfer tokens to the host
+    // const transferSignature = await transferTokens();
+    // if (!transferSignature) {
+    //   console.error("Token transfer failed");
+    //   return;
+    // }
+    //console.log("Token transfer successful, signature:", transferSignature);
+
+    if(modalType === "join" && selectedRoom){
+      console.log("Joining room:", selectedRoom.roomCode);
+      const lobbyCode = selectedRoom.roomCode;
+      console.log("Joining room with code:", lobbyCode);
+
+
+      const response = await fetch("/api/joinRoom", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          roomCode: lobbyCode,
+          joinedPlayerWalletAddress: publicKey.toString(),
+          joinedPlayerName: "joinedPlayerName"
+        }),
+      });
+      const data = await response.json();
+      console.log("Join Game Response:", data);
+      setShowSuccessModal(true);
+      return;
+    }
+    
+    console.log("Hosting room with code:", lobbyCode);
+
+    //call api to host -> url -> /api/hostRoom
+    const response = await fetch("/api/hostRoom", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        roomCode: lobbyCode,
+        hostPlayerWalletAddress: publicKey.toString(),
+        hostPlayerName: "YourName",
+        stakeAmount: stakeAmount,
+        isPrivateRoom: isPrivate,
+        gameId: gameId,
+      }),
+    });
+    const data = await response.json();
+    console.log("Host Game Response:", data);
+    setShowSuccessModal(true);
+    return;
+  };
+
+  const handleJoinRoom = (room) => {
+    setModalType("join");
+    setSelectedRoom(room);
+    setStakeAmount(room.stakeAmount);
+    
+    setShowWalletModal(true);
+  };
+
+  const handleStake= () => {
+    console.log("Public Key:", publicKey.toString());
+    handleGame();
+    setIsConnecting(false);
+  };
+
+  const handleSuccessClose = () => {
+    setShowSuccessModal(false);
+
+    // If it was a host game, redirect to game link
+    if (modalType === "host") {
+      window.open(game.link, "_blank");
+    } else if (modalType === "join" && selectedRoom) {
+      window.open(game.link, "_blank");
+    }
+  };
+  const [isConnecting, setIsConnecting] = useState(false)
+
+  const handleConnect = () => {
+    setIsConnecting(true)
+    handleStake();
+  }
   return (
     <div className="container mx-auto px-4 py-12">
       <motion.h1
@@ -122,9 +367,10 @@ export default function GamePage() {
           >
             <h2 className="text-2xl font-bold mb-4">Instructions</h2>
             <p className="text-gray-300 mb-6">
-              Choose any lobby code and stake some amount to play. You will be redirected to the game. Wait for someone
-              to join the room and play the game. If you win, you can claim your reward from the rewards page, else you
-              will lose all stake.
+              Choose any lobby code and stake some amount to play. You will be
+              redirected to the game. Wait for someone to join the room and play
+              the game. If you win, you can claim your reward from the rewards
+              page, else you will lose all stake.
             </p>
 
             <div className="space-y-6">
@@ -155,8 +401,15 @@ export default function GamePage() {
               </div>
 
               <div className="flex items-center space-x-2">
-                <Switch id="private-game" checked={isPrivate} onCheckedChange={setIsPrivate} />
-                <Label htmlFor="private-game" className="flex items-center cursor-pointer">
+                <Switch
+                  id="private-game"
+                  checked={isPrivate}
+                  onCheckedChange={setIsPrivate}
+                />
+                <Label
+                  htmlFor="private-game"
+                  className="flex items-center cursor-pointer"
+                >
                   {isPrivate ? (
                     <Lock className="h-4 w-4 mr-2 text-purple-400" />
                   ) : (
@@ -168,7 +421,10 @@ export default function GamePage() {
 
               <Button
                 className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
-                onClick={handleHostGame}
+                onClick={()=>{
+                    setModalType("host");
+                    setShowWalletModal(true);
+                }}
                 disabled={!lobbyCode || !stakeAmount}
               >
                 Host Room
@@ -187,14 +443,20 @@ export default function GamePage() {
             <h2 className="text-2xl font-bold mb-4">Available Rooms</h2>
 
             <div className="space-y-4">
-              {mockRooms.map((room) => (
-                <RoomCard key={room.id} room={room} onJoin={() => handleJoinRoom(room)} />
+              {Rooms.map((room,index) => (
+                <RoomCard
+                  key={index}
+                  room={room}
+                  onJoin={() => handleJoinRoom(room)}
+                />
               ))}
 
-              {mockRooms.length === 0 && (
+              {Rooms.length === 0 && (
                 <div className="text-center py-8">
                   <AlertCircle className="h-12 w-12 mx-auto text-gray-500 mb-4" />
-                  <p className="text-gray-400">No rooms available. Try hosting a game instead!</p>
+                  <p className="text-gray-400">
+                    No rooms available. Try hosting a game instead!
+                  </p>
                 </div>
               )}
             </div>
@@ -202,15 +464,122 @@ export default function GamePage() {
         </TabsContent>
       </Tabs>
 
-      <ConnectWalletModal
-        isOpen={showWalletModal}
-        onClose={() => setShowWalletModal(false)}
-        onConnect={handleWalletConnect}
-        modalType={modalType}
-        stakeAmount={modalType === "host" ? stakeAmount : selectedRoom?.stake}
-      />
 
-      <SuccessModal isOpen={showSuccessModal} onClose={handleSuccessClose} modalType={modalType} />
+      <AnimatePresence>
+      {showWalletModal && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50"
+          onClick={() => setShowWalletModal(false)}
+        >
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            className="bg-gray-900 border border-purple-900/30 rounded-xl p-6 w-full max-w-md"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-xl font-bold">Connect Wallet</h2>
+              <button onClick={() => setShowWalletModal(false)} className="text-gray-400 hover:text-white">
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            
+
+            <div className="text-center mb-8">
+              <div className="bg-gray-800 rounded-full h-20 w-20 flex items-center justify-center mx-auto mb-4">
+                <Wallet className="h-10 w-10 text-purple-400" />
+              </div>
+
+              <p className="text-gray-300 mb-2">
+                {modalType === "host"
+                  ? "Stake Tokens to host this game"
+                  : "Stake Tokens to join this game"}
+              </p>
+
+              {modalType === "host" ? stakeAmount : selectedRoom?.stake && <p className="text-lg font-bold text-purple-400">Stake Amount: {modalType === "host" ? stakeAmount : selectedRoom?.stake} SOL</p>}
+            </div>
+
+              <WalletConnectionProvider1>
+                    <WalletMultiButton className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-md px-4 py-2" />
+                  </WalletConnectionProvider1>
+
+                    <br></br>
+                    <br></br>
+                    <div className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-md px-4 py-2">
+                     CGS COINS : {cgsCoins}
+                     </div>
+                  <div className="ml-2 text-gray-400">
+                    <Coins className="h-5 w-5" />
+
+                  </div>
+
+            <Button
+              className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 h-12"
+              onClick={handleConnect}
+              disabled={isConnecting}
+            >
+
+
+              {isConnecting ? (
+                <div className="flex items-center">
+                  
+                  <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full mr-2"></div>
+                  Staking...
+                </div>
+              ) : (
+                "Stake Tokens"
+              )}
+            </Button>
+            <p className="text-xs text-gray-500 text-center mt-4">
+              By connecting your wallet, you agree to our Terms of Service and Privacy Policy.
+            </p>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+   
+
+      <SuccessModal
+        isOpen={showSuccessModal}
+        onClose={handleSuccessClose}
+        modalType={modalType}
+      />
     </div>
-  )
+  );
 }
+
+function WalletConnectionProvider1({ children }) {
+  const endpoint = useMemo(() => clusterApiUrl("devnet"), []);
+  const wallets = useMemo(() => [], []); // Add specific wallets here if needed
+  
+
+
+  return (
+    <ConnectionProvider endpoint={endpoint}>
+      <WalletProvider wallets={wallets} autoConnect>
+        <WalletModalProvider>{children}</WalletModalProvider>
+      </WalletProvider>
+    </ConnectionProvider>
+  );
+}
+
+export default function WalletConnectionProvider({ children }) {
+  const endpoint = useMemo(() => clusterApiUrl("devnet"), []);
+  const wallets = useMemo(() => [], []); // Add specific wallets here if needed
+  
+
+
+  return (
+    <ConnectionProvider endpoint={endpoint}>
+      <WalletProvider wallets={wallets} autoConnect>
+        <WalletModalProvider>{children}</WalletModalProvider>
+        <GamePage />
+      </WalletProvider>
+    </ConnectionProvider>
+  );
+}
+

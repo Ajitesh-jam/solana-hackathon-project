@@ -13,18 +13,18 @@ export default function RoomCard({ room, onJoin }) {
     >
       <div>
         <div className="flex items-center gap-2 mb-2">
-          <h3 className="font-semibold text-lg">{room.code}</h3>
-          {room.isPrivate && <Lock className="h-4 w-4 text-purple-400" />}
+          <h3 className="font-semibold text-lg">{room.roomCode}</h3>
+          {room.isPrivateRoom && <Lock className="h-4 w-4 text-purple-400" />}
         </div>
 
         <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 text-sm text-gray-400">
           <div className="flex items-center">
             <User className="h-4 w-4 mr-1" />
-            <span>{room.hostUserName}</span>
+            <span>{room.hostPlayerName}</span>
           </div>
           <div className="flex items-center">
             <Wallet className="h-4 w-4 mr-1" />
-            <span>{room.stake} SOL</span>
+            <span>{room.stakeAmount} CGS_COINS</span>
           </div>
         </div>
       </div>

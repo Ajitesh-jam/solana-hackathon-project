@@ -1,0 +1,35 @@
+{
+	"name": "Pirate Gold",
+	"symbol": "PGOLD",
+	"description": "Mighty pirate gold that can buy boats, rum and cannons! Arrr!",
+	"seller_fee_basis_points": 0,
+	"image": "https://shdw-drive.genesysgo.net/QZNGUVnJgkw6sGQddwZVZkhyUWSUXAjXF9HQAjiVZ55/coin.png",
+	"animation_url": null,
+	"attributes": [
+		{
+			"trait_type": "Gold",
+			"value": "100%"
+		},
+        {
+			"trait_type": "Pirate",
+			"value": "Arrr!"
+		}
+	],
+	"external_url": "https://www.solana.com",
+	"properties": {
+		"category": "image",
+		"creators": [
+			{
+				"address": "SHrLK32T45rEwJaBnksw7yoQtL1teFtZkwyeWABRGoP",
+				"verified": true,
+				"share": 100
+			}
+		],
+		"files": [
+			{
+				"type": "image/png",
+				"uri": "https://shdw-drive.genesysgo.net/QZNGUVnJgkw6sGQddwZVZkhyUWSUXAjXF9HQAjiVZ55/coin.png"
+			}
+		]
+	}
+}
