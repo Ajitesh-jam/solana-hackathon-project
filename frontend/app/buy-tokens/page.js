@@ -109,14 +109,14 @@ import "@solana/wallet-adapter-react-ui/styles.css";
         },
         body: JSON.stringify({
           walletAddress: publicKey.toString(),
-          amount: Number(amount)
+          amount: Number(amount)*10**9
         }),
       });
 
       const data = await response.json();
 
       if (data.success) {
-        setStatus(`Tokens minted successfully! Transaction: ${data.signature}`);
+        alert(`Tokens minted successfully! Transaction: ${data.signature}`);
       } else {
         throw new Error(data.message || "Failed to mint tokens");
       }
@@ -268,7 +268,7 @@ import "@solana/wallet-adapter-react-ui/styles.css";
                         <div className="border-t border-gray-700 my-2"></div>
                         <div className="flex justify-between font-bold">
                           <span>CGS COINS : </span>
-                          <span>~{amount.toFixed(9)} CGS</span>
+                          <span>~{amount} CGS</span>
                         </div>
                       </div>
 

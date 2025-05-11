@@ -10,7 +10,6 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Wallet, Lock, Unlock, AlertCircle } from "lucide-react";
 import RoomCard from "@/components/RoomCard";
-import ConnectWalletModal from "@/components/ConnectWalletModal";
 import SuccessModal from "@/components/SuccessModal";
 import JSZip from "jszip";
 
@@ -29,11 +28,10 @@ import {
 import {
   clusterApiUrl,
   PublicKey,
+  Transaction 
 } from "@solana/web3.js";
 import "@solana/wallet-adapter-react-ui/styles.css";
- import {  
-  Transaction 
-} from '@solana/web3.js';
+
 
 import {
   getAssociatedTokenAddress,
@@ -273,55 +271,55 @@ function GamePage() {
 
 
     // Transfer tokens to the host
-    // const transferSignature = await transferTokens();
-    // if (!transferSignature) {
-    //   console.error("Token transfer failed");
-    //   return;
-    // }
-    //console.log("Token transfer successful, signature:", transferSignature);
+    const transferSignature = await transferTokens();
+    if (!transferSignature) {
+      console.error("Token transfer failed");
+      return;
+    }
+    console.log("Token transfer successful, signature:", transferSignature);
 
-    // if(modalType === "join" && selectedRoom){
-    //   console.log("Joining room:", selectedRoom.roomCode);
-    //   const lobbyCode = selectedRoom.roomCode;
-    //   console.log("Joining room with code:", lobbyCode);
+    if(modalType === "join" && selectedRoom){
+      console.log("Joining room:", selectedRoom.roomCode);
+      const lobbyCode = selectedRoom.roomCode;
+      console.log("Joining room with code:", lobbyCode);
 
 
-    //   const response = await fetch("/api/joinRoom", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       roomCode: lobbyCode,
-    //       joinedPlayerWalletAddress: publicKey.toString(),
-    //       joinedPlayerName: user.playerName,
-    //     }),
-    //   });
-    //   const data = await response.json();
-    //   console.log("Join Game Response:", data);
-    //   setShowSuccessModal(true);
-    //   return;
-    // }
+      const response = await fetch("/api/joinRoom", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          roomCode: lobbyCode,
+          joinedPlayerWalletAddress: publicKey.toString(),
+          joinedPlayerName: user.playerName,
+        }),
+      });
+      const data = await response.json();
+      console.log("Join Game Response:", data);
+      setShowSuccessModal(true);
+      return;
+    }
     
-    // console.log("Hosting room with code:", lobbyCode);
+    console.log("Hosting room with code:", lobbyCode);
 
-    // //call api to host -> url -> /api/hostRoom
-    // const response = await fetch("/api/hostRoom", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     roomCode: lobbyCode,
-    //     hostPlayerWalletAddress: publicKey.toString(),
-    //     hostPlayerName: user.playerName,
-    //     stakeAmount: stakeAmount,
-    //     isPrivateRoom: isPrivate,
-    //     gameId: gameId,
-    //   }),
-    // });
-    // const data = await response.json();
-    // console.log("Host Game Response:", data);
+    //call api to host -> url -> /api/hostRoom
+    const response = await fetch("/api/hostRoom", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        roomCode: lobbyCode,
+        hostPlayerWalletAddress: publicKey.toString(),
+        hostPlayerName: user.playerName,
+        stakeAmount: stakeAmount,
+        isPrivateRoom: isPrivate,
+        gameId: gameId,
+      }),
+    });
+    const data = await response.json();
+    console.log("Host Game Response:", data);
     setShowSuccessModal(true);
     return;
   };

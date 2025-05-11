@@ -14,7 +14,7 @@ import {
   clusterApiUrl,
   sendAndConfirmTransaction
 } from "@solana/web3.js";
-import bs58 from "bs58";
+
 
 // Handle POST request to mint tokens
 export async function POST(req) {
@@ -34,6 +34,8 @@ export async function POST(req) {
         { status: 400 }
       );
     }
+    console.log("Wallet address:", walletAddress);
+    console.log("Amount to mint:", amount);
 
     // Initialize connection to Solana devnet
     const connection = new Connection(
