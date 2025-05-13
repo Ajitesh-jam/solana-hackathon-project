@@ -5,11 +5,13 @@ import Link from "next/link"
 import { Menu, X, Wallet, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
+import { useSession, signIn, signOut } from "next-auth/react"
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [tokens, setTokens] = useState(0)
+  const { data: session } = useSession()
 
   // Animation variants
   const navVariants = {
@@ -56,7 +58,7 @@ export default function Navbar() {
 
           <div className="hidden md:block">
             <div className="ml-10 flex items-center space-x-4">
-              {isLoggedIn ? (
+              {session ? (
                 <>
                   <motion.div variants={itemVariants} className="flex items-center bg-gray-800 rounded-full px-4 py-1">
                     <Wallet className="h-4 w-4 text-purple-400 mr-2" />
@@ -68,12 +70,18 @@ export default function Navbar() {
                       Profile
                     </Button>
                   </motion.div>
+                  <motion.div variants={itemVariants}>
+                    <span className="text-gray-200">Welcome, {session.user.name}</span>
+                  </motion.div>
+                  <motion.div variants={itemVariants}>
+                    <button onClick={() => signOut()} className="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded transition">Logout</button>
+                  </motion.div>
                 </>
               ) : (
                 <>
                   <motion.div variants={itemVariants}>
-                    <Button variant="ghost" className="text-gray-300 hover:text-white" onClick={handleLogin}>
-                      Login
+                    <Button variant="ghost" className="text-gray-300 hover:text-white" onClick={() => signIn("google")}>
+                      Login with Google
                     </Button>
                   </motion.div>
                   <motion.div variants={itemVariants}>
@@ -101,7 +109,7 @@ export default function Navbar() {
       {isOpen && (
         <div className="md:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            {isLoggedIn ? (
+            {session ? (
               <>
                 <div className="flex items-center bg-gray-800 rounded-full px-4 py-2 mb-2">
                   <Wallet className="h-4 w-4 text-purple-400 mr-2" />
@@ -111,15 +119,23 @@ export default function Navbar() {
                   <User className="h-4 w-4 mr-2" />
                   Profile
                 </Button>
+                <span className="text-gray-200">Welcome, {session.user.name}</span>
+                <Button
+                  variant="ghost"
+                  className="w-full text-left text-gray-300 hover:text-white"
+                  onClick={() => signOut()}
+                >
+                  Logout
+                </Button>
               </>
             ) : (
               <>
                 <Button
                   variant="ghost"
                   className="w-full text-left text-gray-300 hover:text-white"
-                  onClick={handleLogin}
+                  onClick={() => signIn("google")}
                 >
-                  Login
+                  Login with Google
                 </Button>
                 <Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
                   Sign Up

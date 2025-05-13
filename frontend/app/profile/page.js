@@ -1,10 +1,12 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Wallet, User, Trophy, Clock, Edit } from "lucide-react"
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
+import { useSession } from "next-auth/react";
 
 export default function ProfilePage() {
   // Mock user data
@@ -18,6 +20,36 @@ export default function ProfilePage() {
     wins: 28,
     losses: 14,
   })
+  const [assets, setAssets] = useState([]);
+  const [loadingAssets, setLoadingAssets] = useState(true);
+  const [sellQty, setSellQty] = useState({});
+  const [selling, setSelling] = useState({});
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    if (session) {
+      fetch("/api/user/assets")
+        .then(res => res.json())
+        .then(data => {
+          setAssets(data);
+          setLoadingAssets(false);
+        });
+    }
+  }, [session]);
+
+  const handleSell = async (objectId) => {
+    setSelling(s => ({ ...s, [objectId]: true }));
+    const quantity = sellQty[objectId] || 1;
+    const res = await fetch("/api/objects/sell", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ objectId, quantity }),
+    });
+    if (res.ok) {
+      setAssets(a => a.map(asset => asset.id === objectId ? { ...asset, quantity: asset.quantity - quantity } : asset).filter(asset => asset.quantity > 0));
+    }
+    setSelling(s => ({ ...s, [objectId]: false }));
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -199,6 +231,49 @@ export default function ProfilePage() {
             </div>
           </motion.div>
         </div>
+
+        <motion.div className="mt-12 bg-gray-800/50 rounded-xl p-8">
+          <h2 className="text-2xl font-bold mb-6">Your Assets</h2>
+          {loadingAssets ? (
+            <div className="text-gray-300">Loading assets...</div>
+          ) : assets.length === 0 ? (
+            <div className="text-gray-400">You don't own any assets yet.</div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {assets.map(asset => (
+                <Card key={asset.id} className="bg-gray-900 border-purple-700">
+                  <CardHeader>
+                    <CardTitle className="text-purple-300">{asset.name}</CardTitle>
+                    <CardDescription className="text-gray-400">{asset.category}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <img src={asset.imageUrl} alt={asset.name} className="rounded-lg mb-4 w-full h-40 object-cover border border-purple-700" />
+                    <p className="text-gray-200 mb-2">{asset.description}</p>
+                    <p className="text-sm text-gray-400 mb-2">Owned: {asset.quantity}</p>
+                    <p className="text-lg font-semibold text-pink-400">Price: {asset.price} ◎</p>
+                    <div className="flex items-center gap-2 mt-2">
+                      <input
+                        type="number"
+                        min={1}
+                        max={asset.quantity}
+                        value={sellQty[asset.id] || 1}
+                        onChange={e => setSellQty(q => ({ ...q, [asset.id]: Math.max(1, Math.min(asset.quantity, Number(e.target.value))) }))}
+                        className="w-16 rounded bg-gray-900 border border-purple-700 px-2 py-1 text-white"
+                      />
+                      <Button
+                        className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700"
+                        onClick={() => handleSell(asset.id)}
+                        disabled={selling[asset.id]}
+                      >
+                        {selling[asset.id] ? "Selling..." : "Sell"}
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+        </motion.div>
 
         <motion.div variants={itemVariants} className="mt-12 bg-gray-800/50 rounded-xl p-8 text-center">
           <h2 className="text-2xl font-bold mb-4">Ready to Play?</h2>
