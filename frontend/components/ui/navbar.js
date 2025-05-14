@@ -4,19 +4,10 @@ import { useState } from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { Avatar } from "@/components/ui/avatar"
 import { useToast } from "@/hooks/use-toast"
 import { Menu, X, LogIn, UserPlus, User, LogOut, Settings, Wallet, Coins } from "lucide-react"
 import { useSidebar } from "./sidebar"
-import { useAuth } from "@/components/auth/auth-provider"
 import useUsers  from "@/hooks/users.zustand"
 
 
@@ -26,15 +17,11 @@ export default function Navbar() {
   const { toggleSidebar } = useSidebar()
   //const { user, logout } = useAuth()
   const user = useUsers((state) => state.selectedUser)
-  console.log("user", user)
+  const logout = useUsers((state) => state.removeUser)
 
 
   const handleLogout = async () => {
-    try {
-      await logout()
-    } catch (error) {
-      console.error("Logout error:", error)
-    }
+    logout();
   }
 
   return (
@@ -59,12 +46,16 @@ export default function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-4">
-            {user.name!=="Dummy User" ? (
+            {user.playerName!=="Dummy User" ? (
               <>
                 <div className="flex items-center bg-gray-800/50 rounded-full px-3 py-1.5 mr-2">
                   <Coins className="h-4 w-4 text-yellow-400 mr-1.5" />
                   <span className="text-sm font-medium"> {user.playerName} </span>
                 </div>
+                <Button variant="ghost" onClick={handleLogout} className="w-full justify-start">
+                    <LogOut className="mr-2 h-5 w-5" />
+                    Log out
+                  </Button>
               
               </>
             ) : (
@@ -111,7 +102,7 @@ export default function Navbar() {
           className="md:hidden bg-gray-900 border-b border-gray-800"
         >
           <div className="px-4 py-4 space-y-3">
-            {user.name!=="Dummy User" ? (
+            {user.playerName!=="Dummy User" ? (
               <>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
@@ -128,6 +119,7 @@ export default function Navbar() {
                     </div>
                   </div>
                 </div>
+                
                 <div className="pt-2 space-y-2">
                   <Button variant="ghost" asChild className="w-full justify-start">
                     <Link href="/profile">

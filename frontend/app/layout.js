@@ -30,7 +30,7 @@ export default function RootLayout({ children }) {
                   <FloatingIcons />
                 </div>
               </div>
-              <Toaster />
+         
             </SidebarProvider>
           </AuthProvider>
         </ThemeProvider>

@@ -38,7 +38,8 @@ export async function POST(request) {
       message: "Login successful",
       user: {
         playerName: userData.playerName,
-        email: userData.email
+        email: userData.email,
+        skins: userData.skins,
       },
     })
   } catch (error) {

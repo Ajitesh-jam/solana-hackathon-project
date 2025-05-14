@@ -28,7 +28,8 @@ export async function POST(request) {
     await setDoc(doc(db, "users", playerName), {
       playerName,
       email,
-        password: passwordHash,
+      password: passwordHash,
+      skins: [],
     })
 
     return Response.json({
@@ -36,6 +37,7 @@ export async function POST(request) {
       user: {
         playerName,
         email,
+        skins: [],
       },
     })
   } catch (error) {

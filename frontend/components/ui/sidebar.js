@@ -77,6 +77,12 @@ export default function Sidebar() {
       href: "/profile",
       active: false,
     },
+    {
+      title: "marketplace",
+      icon: User,
+      href: "/marketplace/buy-skins",
+      active: false,
+    },
   ]
 
   const games = [

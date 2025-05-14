@@ -68,6 +68,7 @@ export default function LoginForm() {
       if (!response.ok) {
         throw new Error(data.message || "Login failed")
       }
+      console.log("Login response:", data)
         // Save user to Zustand store
         setUser(data.user);
 
