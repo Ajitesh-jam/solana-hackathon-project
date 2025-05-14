@@ -1,6 +1,5 @@
 "use client"
 
-import { useState } from "react"
 import { motion } from "framer-motion"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
@@ -8,7 +7,6 @@ import { Badge } from "@/components/ui/badge"
 import { ShoppingCart, Info, User } from "lucide-react"
 
 export default function MarketplaceSkinCard({ listing, skin, onBuy }) {
-  const [isHovered, setIsHovered] = useState(false)
 
   // Determine badge color based on rarity
   const getBadgeColor = (rarity) => {
@@ -33,8 +31,6 @@ export default function MarketplaceSkinCard({ listing, skin, onBuy }) {
     <motion.div
       className="bg-gray-800/50 backdrop-blur-sm rounded-xl overflow-hidden border border-gray-700 hover:border-purple-500/50 transition-colors group"
       whileHover={{ y: -5, transition: { duration: 0.2 } }}
-      onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
     >
       <div className="relative h-48 overflow-hidden">
         <Image
@@ -66,16 +62,17 @@ export default function MarketplaceSkinCard({ listing, skin, onBuy }) {
           <div className="flex items-center">
             <span className="text-sm text-gray-400">Game:</span>
             <span className="ml-2 text-sm font-medium">
-              {skin.gameId === "solana-battleground"
+              {skin.gameId === "solanabattlefield"
                 ? "Solana Battleground"
-                : skin.gameId === "solana-ops"
+                : skin.gameId === "solanaops"
                   ? "Solana Ops"
-                  : skin.gameId === "call-of-duty"
+                  : skin.gameId === "callofduty"
                     ? "Call of Duty"
                     : skin.gameId}
             </span>
           </div>
         </div>
+        {skin.skinId}
 
         <div className="flex justify-between items-center">
           <div>

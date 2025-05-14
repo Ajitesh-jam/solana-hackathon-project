@@ -40,6 +40,7 @@ export async function POST(request) {
         playerName: userData.playerName,
         email: userData.email,
         skins: userData.skins,
+        walletAddress: userData.walletAddress,
       },
     })
   } catch (error) {

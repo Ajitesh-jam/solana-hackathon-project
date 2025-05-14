@@ -267,7 +267,12 @@ export default function ProfilePage() {
     if (userfetched) {
       setUser((prev) => ({
         ...prev,
-        playerName: userfetched.playerName
+        playerName: userfetched.playerName,
+        walletAddress: userfetched.walletAddress
+          ? `${userfetched.walletAddress.slice(0, 7)}...${userfetched.walletAddress.slice(-7)}`
+          : "",
+        email: userfetched.email,
+        skins: userfetched.skins,
       }))
     }
   }, [userfetched])
@@ -321,20 +326,20 @@ export default function ProfilePage() {
             <CardContent>
               <div className="flex flex-col items-center text-center mb-6">
                 <Avatar className="w-24 h-24 mb-4 border-2 border-purple-500">
-                  <AvatarImage src={userData.image || "/placeholder.svg"} alt={userData.name} />
+                  <AvatarImage src={user.image || "/placeholder.svg"} alt={user.playerName} />
                   
                 </Avatar>
-                <h2 className="text-2xl font-bold mb-1">{userData.playerName}</h2>
+                <h2 className="text-2xl font-bold mb-1">{user.playerName}</h2>
                 <div className="flex items-center text-sm text-gray-400 mb-4">
                   <Wallet className="w-4 h-4 mr-1" />
-                  <span>{userData.wallet}</span>
+                  <span>{user.walletAddress}</span>
                 </div>
                 <div className="flex items-center justify-center bg-gray-700/50 rounded-full px-4 py-2 mb-4">
                   <Coins className="w-5 h-5 mr-2 text-yellow-400" />
                   
                 </div>
                 <Button className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700">
-                  Edit Profile
+                  {user.email}
                 </Button>
               </div>
 
@@ -344,7 +349,7 @@ export default function ProfilePage() {
                     <User className="w-5 h-5 mr-3 text-purple-400" />
                     <span>Member Since</span>
                   </div>
-                  <span className="text-gray-300">{userData.joinDate}</span>
+                  <span className="text-gray-300">{2025}</span>
                 </div>
 
                 <div className="flex justify-between items-center p-3 bg-gray-700/30 rounded-lg">
@@ -352,7 +357,7 @@ export default function ProfilePage() {
                     <Trophy className="w-5 h-5 mr-3 text-yellow-400" />
                     <span>Win Rate</span>
                   </div>
-                  <span className="text-gray-300">{Math.round((userData.wins / userData.gamesPlayed) * 100)}%</span>
+                  <span className="text-gray-300">{Math.round((user.wins / user.gamesPlayed) * 100)}%</span>
                 </div>
               </div>
             </CardContent>

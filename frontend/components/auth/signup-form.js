@@ -18,6 +18,7 @@ export default function SignupForm() {
     email: "",
     password: "",
     confirmPassword: "",
+    walletAddress: "",
   })
   const [errors, setErrors] = useState({})
   const { toast } = useToast()
@@ -83,6 +84,7 @@ export default function SignupForm() {
           playerName: formData.playerName,
           email: formData.email,
           password: formData.password,
+          walletAddress: formData.walletAddress,
         }),
       })
 
@@ -198,6 +200,20 @@ export default function SignupForm() {
                 value={formData.email}
                 onChange={handleChange}
                 className={errors.email ? "border-red-500" : ""}
+                disabled={isLoading}
+              />
+              {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+            </motion.div>
+            <motion.div variants={itemVariants} className="space-y-2">
+              <Label htmlFor="walletAddress">Wallet Address</Label>
+              <Input
+                id="walletAddress"
+                name="walletAddress"
+                type="string"
+                placeholder="Enter your Wallet address"
+                value={formData.walletAddress}
+                onChange={handleChange}
+                className={errors.walletAddress ? "border-red-500" : ""}
                 disabled={isLoading}
               />
               {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}

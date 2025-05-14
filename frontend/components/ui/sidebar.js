@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/hooks/use-toast"
 import { useMobile } from "@/hooks/use-mobile"
-import { Home, Coins, Trophy, User, ChevronRight, X, Gamepad2, Sword } from "lucide-react"
+import { Home, Coins, Trophy, User, ChevronRight, X, Gamepad2, Sword ,ShoppingCart} from "lucide-react"
 
 const SidebarContext = createContext()
 
@@ -79,7 +79,7 @@ export default function Sidebar() {
     },
     {
       title: "marketplace",
-      icon: User,
+      icon: ShoppingCart,
       href: "/marketplace/buy-skins",
       active: false,
     },

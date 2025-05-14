@@ -1,5 +1,5 @@
 import { doc, getDoc } from "firebase/firestore";
-import { db } from "../../../../lib/firebase";
+import { db } from "../../../lib/firebase";
 
 export async function GET(request) {
   try {
@@ -18,6 +18,7 @@ export async function GET(request) {
     }
 
     const { skins = [] } = userSnap.data();
+    
 
     return Response.json({ skins });
   } catch (error) {

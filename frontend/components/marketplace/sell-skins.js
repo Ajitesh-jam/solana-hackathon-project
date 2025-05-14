@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, use } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useInView } from "react-intersection-observer"
 import { Input } from "@/components/ui/input"
@@ -41,77 +41,136 @@ const games = [
 ]
 
 // Mock data for skins (same as in buy-skins.js)
+// Mock data for skins
 const mockSkins = [
   {
-    skinId: "skin-001",
-    gameId: "solana-battleground",
+    skinId: 1,
+    gameId: "solanabattlefield",
     name: "Dragon Slayer",
     description: "Epic armor with dragon scales that glow in battle",
-    image: "/placeholder.svg?height=300&width=300",
-    price: 250,
+    image: "/images/solanabattleground/0.jpeg?height=300&width=300",
+    price: 1,
     rarity: "Legendary",
-    gameCompanyWalletAddress: "8xH4Zw9Y3mKn2TjP...",
+    gameCompanyWalletAddress: "4L8ryesGMUPwbUstN9ZMKUBvtWsBCAsZjJHpD8Bma76i",
     type: "Armor",
   },
   {
-    skinId: "skin-002",
-    gameId: "solana-battleground",
+    skinId: 2,
+    gameId: "solanabattlefield",
     name: "Shadow Assassin",
-    description: "Stealthy outfit that provides camouflage in dark environments",
-    image: "/placeholder.svg?height=300&width=300",
-    price: 180,
+    description:
+      "Stealthy outfit that provides camouflage in dark environments",
+    image: "/images/solanabattleground/1.jpeg",
+    price: 1.8,
     rarity: "Epic",
-    gameCompanyWalletAddress: "8xH4Zw9Y3mKn2TjP...",
+    gameCompanyWalletAddress: "4L8ryesGMUPwbUstN9ZMKUBvtWsBCAsZjJHpD8Bma76i",
     type: "Outfit",
   },
   {
-    skinId: "skin-003",
-    gameId: "solana-ops",
+    skinId: 3,
+    gameId: "solanabattlefield",
     name: "Cyber Commando",
     description: "Futuristic combat suit with integrated HUD",
-    image: "/placeholder.svg?height=300&width=300",
-    price: 220,
+    image: "/images/solanabattleground/2.jpeg",
+    price: 2.3,
     rarity: "Epic",
-    gameCompanyWalletAddress: "9zT5Hw8B4kL7RpM...",
+    gameCompanyWalletAddress: "4L8ryesGMUPwbUstN9ZMKUBvtWsBCAsZjJHpD8Bma76i",
     type: "Outfit",
   },
   {
-    skinId: "skin-004",
-    gameId: "solana-ops",
+    skinId: 4,
+    gameId: "solanabattlefield",
     name: "Plasma Rifle",
     description: "Energy weapon with custom particle effects",
-    image: "/placeholder.svg?height=300&width=300",
-    price: 150,
+    image: "/images/solanabattleground/3.jpeg",
+    price: 1.5,
     rarity: "Rare",
-    gameCompanyWalletAddress: "9zT5Hw8B4kL7RpM...",
+    gameCompanyWalletAddress: "4L8ryesGMUPwbUstN9ZMKUBvtWsBCAsZjJHpD8Bma76i",
     type: "Weapon",
   },
   {
-    skinId: "skin-005",
-    gameId: "call-of-duty",
+    skinId: 5,
+    gameId: "solanabattlefield",
     name: "Golden Arsenal",
     description: "Complete set of gold-plated weapons",
-    image: "/placeholder.svg?height=300&width=300",
-    price: 300,
+    image: "/images/solanabattleground/4.jpeg",
+    price: 0.3,
     rarity: "Legendary",
-    gameCompanyWalletAddress: "3xR7Kp2L9sB6Vj8...",
+    gameCompanyWalletAddress: "4L8ryesGMUPwbUstN9ZMKUBvtWsBCAsZjJHpD8Bma76i",
     type: "Weapon Pack",
   },
   {
-    skinId: "skin-006",
-    gameId: "call-of-duty",
+    skinId: 6,
+    gameId: "solanabattlefield",
     name: "Tactical Operator",
     description: "Special forces outfit with multiple attachment points",
-    image: "/placeholder.svg?height=300&width=300",
-    price: 200,
+    image: "/images/solanabattleground/5.jpeg",
+    price: 2,
     rarity: "Epic",
-    gameCompanyWalletAddress: "3xR7Kp2L9sB6Vj8...",
+    gameCompanyWalletAddress: "4L8ryesGMUPwbUstN9ZMKUBvtWsBCAsZjJHpD8Bma76i",
     type: "Outfit",
   },
-]
+  {
+    skinId: 7,
+    gameId: "solanabattlefield",
+    name: "Tactical Operator",
+    description: "Special forces outfit with multiple attachment points",
+    image: "/images/solanabattleground/6.jpeg",
+    price: 2,
+    rarity: "Epic",
+    gameCompanyWalletAddress: "4L8ryesGMUPwbUstN9ZMKUBvtWsBCAsZjJHpD8Bma76i",
+    type: "Outfit",
+  },
+  {
+    skinId: 8,
+    gameId: "solanabattlefield",
+    name: "Tactical Operator",
+    description: "Special forces outfit with multiple attachment points",
+    image: "/images/solanabattleground/5.jpeg",
+    price: 2,
+    rarity: "Epic",
+    gameCompanyWalletAddress: "4L8ryesGMUPwbUstN9ZMKUBvtWsBCAsZjJHpD8Bma76i",
+    type: "Outfit",
+  },
+  {
+    skinId: 9,
+    gameId: "solanaops",
+    name: "Tactical Operator",
+    description: "Special forces outfit with multiple attachment points",
+    image: "/images/callofduty/1.jpeg",
+    price: 2,
+    rarity: "Epic",
+    gameCompanyWalletAddress: "4L8ryesGMUPwbUstN9ZMKUBvtWsBCAsZjJHpD8Bma76i",
+    type: "Outfit",
+  },
+  {
+    skinId: 10,
+    gameId: "solanaops",
+    name: "Tactical Operator",
+    description: "Special forces outfit with multiple attachment points",
+    image: "/images/callofduty/2.jpeg",
+    price: 2,
+    rarity: "Epic",
+    gameCompanyWalletAddress: "4L8ryesGMUPwbUstN9ZMKUBvtWsBCAsZjJHpD8Bma76i",
+    type: "Outfit",
+  },
+  {
+    skinId: 11,
+    gameId: "solanaops",
+    name: "Tactical Operator",
+    description: "Special forces outfit with multiple attachment points",
+    image: "/images/callofduty/3.jpeg",
+    price: 2,
+    rarity: "Epic",
+    gameCompanyWalletAddress: "4L8ryesGMUPwbUstN9ZMKUBvtWsBCAsZjJHpD8Bma76i",
+    type: "Outfit",
+  },
+];
 
-// Mock data for user's owned skins
-const mockUserSkinIds = ["skin-001", "skin-003", "skin-005"]
+
+
+ 
+import useUsers from "@/hooks/users.zustand"
 
 export default function SellSkins() {
   const [selectedGame, setSelectedGame] = useState("all")
@@ -123,7 +182,8 @@ export default function SellSkins() {
   const [userSkins, setUserSkins] = useState([])
   const [allSkins, setAllSkins] = useState([])
   const { toast } = useToast()
-  const { user } = useAuth()
+  const user = useUsers((state) => state.selectedUser)
+
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -131,23 +191,29 @@ export default function SellSkins() {
 
   // Fetch user's skins
   useEffect(() => {
+    if(user.playerName === "Dummy User") {
+      setUserSkins(mockSkins)
+      setIsLoading(false)
+      return
+    }
     const fetchUserSkins = async () => {
       setIsLoading(true)
       try {
+        console.log("Fetching user skins for:", user?.playerName)
         // In a real app, you would fetch from your API
-        // const response = await fetch('/api/user/skins')
-        // const data = await response.json()
-        // const userSkinIds = data.skinIds
-        // setAllSkins(data.allSkins)
+        const response = await fetch(`/api/getUserSkins?playerName=${user?.playerName}`)
+        if (!response.ok) {
+          throw new Error("Failed to fetch user skins")
+        }
 
-        // Using mock data for now
-        setTimeout(() => {
-          setAllSkins(mockSkins)
-          // Filter skins to only include those owned by the user
-          const ownedSkins = mockSkins.filter((skin) => mockUserSkinIds.includes(skin.skinId))
-          setUserSkins(ownedSkins)
-          setIsLoading(false)
-        }, 1000)
+        const data = await response.json()
+       
+        const userSkinIds = data.skins;
+        console.log("User Skin IDs:", userSkinIds)
+        const ownedSkins = mockSkins.filter((skin) => userSkinIds.includes(skin.skinId))
+        console.log("Owned Skins:", ownedSkins)
+        setUserSkins(ownedSkins)
+        setIsLoading(false)
       } catch (error) {
         console.error("Error fetching user skins:", error)
         toast({
@@ -158,9 +224,10 @@ export default function SellSkins() {
         setIsLoading(false)
       }
     }
+    setAllSkins(mockSkins);
 
     fetchUserSkins()
-  }, [toast])
+  }, [user])
 
   // Filter skins based on selected game, search query, rarity, and type
   const filteredSkins = userSkins.filter((skin) => {
@@ -216,7 +283,48 @@ export default function SellSkins() {
       description: `${skin.name} has been listed for ${price} tokens`,
       variant: "gaming",
     })
+
+    console.log("Skin sold:", skin)
+    console.log("Price:", price)
+    console.log("Seller:", user)
     // In a real app, you would call your API to handle the listing
+
+    //call api to fetch new listing id;
+
+    //call api to add seller
+    fetch("/api/addSeller", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        listingId: skin.skinId + "-" + user.walletAddress + "-" + price +"-"+ Date.now(),       //unique listing id  
+        skinId: skin.skinId,
+        sellerName: user.playerName,
+        sellerWalletAddress: user.walletAddress,
+        price:price,
+        listedDate: new Date().toISOString(),
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to create listing")
+        }
+        return response.json()
+      })
+      .then((data) => {
+        console.log("Listing created:", data)
+      })
+      .catch((error) => {
+        console.error("Error creating listing:", error)
+      })
+
+
+      //refresh window
+      window.location.reload()
+
+
+
   }
 
   return (

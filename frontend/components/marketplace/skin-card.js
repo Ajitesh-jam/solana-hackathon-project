@@ -67,6 +67,7 @@ export default function SkinCard({ skin, onBuy }) {
             </span>
           </div>
         </div>
+        
 
         <div className="flex justify-between items-center">
           <div className="flex items-center">

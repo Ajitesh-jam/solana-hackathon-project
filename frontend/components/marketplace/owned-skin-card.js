@@ -31,7 +31,7 @@ export default function OwnedSkinCard({ skin, onSell }) {
   }
 
   const handlePriceChange = (e) => {
-    const value = Number.parseInt(e.target.value)
+    const value = e.target.value;
     setSellPrice(value)
 
     if (isNaN(value) || value <= 0) {
@@ -96,7 +96,7 @@ export default function OwnedSkinCard({ skin, onSell }) {
           <div className="flex justify-between items-center">
             <div className="flex items-center">
               <span className="text-sm text-gray-400">Original Price:</span>
-              <span className="ml-2 font-medium">{skin.price} tokens</span>
+              <span className="ml-2 font-medium">{Number(skin.price).toFixed(3)} tokens</span>
             </div>
             <Button
               onClick={() => setShowSellModal(true)}
@@ -107,25 +107,6 @@ export default function OwnedSkinCard({ skin, onSell }) {
             </Button>
           </div>
         </div>
-
-        <motion.div
-          className="absolute inset-0 bg-black/70 flex items-center justify-center p-6 opacity-0 pointer-events-none"
-          animate={{ opacity: isHovered ? 1 : 0 }}
-          transition={{ duration: 0.2 }}
-        >
-          <div className="text-center">
-            <Info className="h-8 w-8 mx-auto mb-4 text-purple-400" />
-            <h3 className="text-lg font-bold mb-2 text-white">{skin.name}</h3>
-            <p className="text-gray-300 mb-4">{skin.description}</p>
-            <Button
-              onClick={() => setShowSellModal(true)}
-              className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
-            >
-              <Tag className="mr-2 h-4 w-4" />
-              Sell This Skin
-            </Button>
-          </div>
-        </motion.div>
       </motion.div>
 
       <AnimatePresence>
@@ -173,11 +154,11 @@ export default function OwnedSkinCard({ skin, onSell }) {
                   </p>
                   <div className="flex justify-between text-sm">
                     <span>Original Price:</span>
-                    <span>{skin.price} tokens</span>
+                    <span>{Number(skin.price).toFixed(3)} tokens</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span>Recommended Price:</span>
-                    <span>{Math.floor(skin.price * 0.9)} tokens</span>
+                    <span>{Number(skin.price * 0.9).toFixed(3)} tokens</span>
                   </div>
                 </div>
 
@@ -187,18 +168,19 @@ export default function OwnedSkinCard({ skin, onSell }) {
                     type="number"
                     value={sellPrice}
                     onChange={handlePriceChange}
-                    min="1"
+                    min="0.00001"
+                    step="0.00001"
                     className={error ? "border-red-500" : ""}
                   />
                   {error && <p className="text-red-500 text-sm">{error}</p>}
 
                   <div className="flex justify-between text-sm mt-2">
                     <span>You'll receive:</span>
-                    <span className="font-medium">{Math.floor(sellPrice * 0.9)} tokens (90%)</span>
+                    <span className="font-medium">{Number(sellPrice * 0.9).toFixed(3)} tokens (90%)</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span>Game company receives:</span>
-                    <span>{Math.floor(sellPrice * 0.1)} tokens (10%)</span>
+                    <span>{Number(sellPrice * 0.1).toFixed(3)} tokens (10%)</span>
                   </div>
                 </div>
               </div>

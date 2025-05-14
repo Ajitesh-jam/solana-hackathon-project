@@ -187,13 +187,25 @@ export default function Home() {
           >
             Create an account, connect your Solana wallet, and start earning rewards today.
           </motion.p>
+          <motion.p
+            className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            viewport={{ once: true }}
+          >
+            We are group of students from Indian Institute of Technology, Kharagpur. We are game developers and blockchain enthusiasts.
+            <br></br> You can check our group page : <a href="https://cgsiitkgp.tech/"> https://cgsiitkgp.tech/</a> 
+          </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
             viewport={{ once: true }}
           >
-            <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-lg py-6 px-8">
+            <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-lg py-6 px-8"
+              onClick={() => window.location.href = "/signup"}
+            >
               Sign Up Now
             </Button>
           </motion.div>
