@@ -31,7 +31,15 @@ export default function ProfilePage() {
       fetch("/api/user/assets")
         .then(res => res.json())
         .then(data => {
-          setAssets(data);
+          if (Array.isArray(data)) {
+            setAssets(data);
+          } else {
+            setAssets([]); // fallback if error or not array
+          }
+          setLoadingAssets(false);
+        })
+        .catch(() => {
+          setAssets([]);
           setLoadingAssets(false);
         });
     }
@@ -103,7 +111,7 @@ export default function ProfilePage() {
                 </div>
                 <div className="flex items-center justify-center md:justify-start">
                   <Clock className="h-4 w-4 mr-2 text-purple-400" />
-                  <span>Joined {new Date(user.joinedDate).toLocaleDateString()}</span>
+                  {/* <span>Joined {new Date(user.joinedDate).toLocaleDateString()}</span> */}
                 </div>
               </div>
             </div>

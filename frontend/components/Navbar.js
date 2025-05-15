@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from 'next/navigation';
 import Link from "next/link"
 import { Menu, X, Wallet, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -12,7 +13,7 @@ export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [tokens, setTokens] = useState(0)
   const { data: session } = useSession()
-
+  const router = useRouter()
   // Animation variants
   const navVariants = {
     hidden: { opacity: 0, y: -20 },
@@ -115,7 +116,11 @@ export default function Navbar() {
                   <Wallet className="h-4 w-4 text-purple-400 mr-2" />
                   <span className="text-purple-400 font-bold">{tokens} SOL</span>
                 </div>
-                <Button variant="ghost" className="w-full text-left text-gray-300 hover:text-white">
+                <Button
+                  variant="ghost"
+                  className="text-gray-300 hover:text-white"
+                  onClick={() => router.push('/profile')}
+                >
                   <User className="h-4 w-4 mr-2" />
                   Profile
                 </Button>

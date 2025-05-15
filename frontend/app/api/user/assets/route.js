@@ -1,10 +1,10 @@
 import { db } from "@/lib/firebaseAdmin";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../../auth/[...nextauth]/route";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "../../auth/[...nextauth]/route.js";
 
-export async function GET() {
+export async function GET(req) {
     try {
-        const session = await getServerSession(authOptions);
+        const session = await getServerSession(req, authOptions);
         if (!session) {
             return Response.json({ error: "Unauthorized" }, { status: 401 });
         }
