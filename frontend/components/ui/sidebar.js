@@ -72,17 +72,17 @@ export default function Sidebar() {
       active: false,
     },
     {
-      title: "Profile",
-      icon: User,
-      href: "/profile",
-      active: false,
-    },
-    {
       title: "marketplace",
       icon: ShoppingCart,
       href: "/marketplace/buy-skins",
       active: false,
     },
+    {
+      title: "Profile",
+      icon: User,
+      href: "/profile",
+      active: false,
+    }
   ]
 
   const games = [

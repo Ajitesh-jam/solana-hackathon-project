@@ -2,6 +2,7 @@
 
 import { db } from '../../../lib/firebase'; // adjust if needed
 import { doc, setDoc } from 'firebase/firestore';
+import { number } from 'framer-motion';
 import { NextResponse } from 'next/server';
 
 export async function POST(req) {
@@ -25,7 +26,8 @@ export async function POST(req) {
       hostPlayerName,
       stakeAmount,
       isPrivateRoom,
-      gameId
+      gameId,
+      numberOfPlayers: 1,
     });
 
     return NextResponse.json({ message: 'Room hosted successfully' }, { status: 200 });

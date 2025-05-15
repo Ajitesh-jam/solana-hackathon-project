@@ -25,22 +25,16 @@ import {
   WalletModalProvider,
   WalletMultiButton,
 } from "@solana/wallet-adapter-react-ui";
-import {
-  clusterApiUrl,
-  PublicKey,
-  Transaction 
-} from "@solana/web3.js";
+import { clusterApiUrl, PublicKey, Transaction } from "@solana/web3.js";
 import "@solana/wallet-adapter-react-ui/styles.css";
-
 
 import {
   getAssociatedTokenAddress,
   createAssociatedTokenAccountInstruction,
-  createTransferInstruction
-} from '@solana/spl-token';
+  createTransferInstruction,
+} from "@solana/spl-token";
 
-import useUsers
- from "@/hooks/users.zustand";
+import useUsers from "@/hooks/users.zustand";
 // Game data
 const games = {
   solanabattlefield: {
@@ -53,14 +47,14 @@ const games = {
   solanaops: {
     name: "Solana Ops",
     description:
-    "Tactical team-based missions with real-time combat and blockchain rewards.",
+      "Tactical team-based missions with real-time combat and blockchain rewards.",
     link: "https://example.com/solanaops",
     downloadLink: "/multi.zip",
   },
   callofduty: {
     name: "Call of Duty",
     description:
-    "The legendary FPS now with Solana integration. Stake, play, and earn.",
+      "The legendary FPS now with Solana integration. Stake, play, and earn.",
     link: "https://example.com/callofduty",
     downloadLink: "/multi.zip",
   },
@@ -76,63 +70,60 @@ function GamePage() {
   };
   const user = useUsers((state) => state.selectedUser);
 
-    async function handleZip(){
+  async function handleZip() {
+    const zip = new JSZip();
+    const fileName = game.downloadLink.split("/").pop(); // Extract the file name from the URL
+    const fileUrl = game.downloadLink; // URL of the file to be downloaded
+    const response = await fetch(fileUrl);
+    const blob = await response.blob();
+    zip.file(fileName, blob);
+    const content = await zip.generateAsync({ type: "blob" });
+    const downloadLink = document.createElement("a");
+    downloadLink.href = URL.createObjectURL(content);
+    downloadLink.download = fileName;
+    downloadLink.click();
+    URL.revokeObjectURL(downloadLink.href); // Clean up the URL object
+  }
 
-
-      const zip = new JSZip();
-      const fileName = game.downloadLink.split('/').pop(); // Extract the file name from the URL
-      const fileUrl = game.downloadLink; // URL of the file to be downloaded
-      const response = await fetch(fileUrl);
-      const blob = await response.blob();
-      zip.file(fileName, blob);
-      const content = await zip.generateAsync({ type: "blob" });
-      const downloadLink = document.createElement("a");
-      downloadLink.href = URL.createObjectURL(content);
-      downloadLink.download = fileName;
-      downloadLink.click();
-      URL.revokeObjectURL(downloadLink.href); // Clean up the URL object
-
-
-    }
-
-  const [Rooms, setRooms] = useState( [
-  {
-    id: 1,
-    roomCode: "GAME123",
-    stakeAmount: 50,
-    hostPlayerWalletAddress: "Wallet123",
-    hostPlayerName: "Player1",
-    isPrivate: false,
-  },
-  {
-    id: 2,
-    roomCode: "BATTLE456",
-    stakeAmount: 100,
-    hostPlayerWalletAddress: "Wallet456",
-    hostPlayerName: "CryptoGamer",
-    isPrivate: false,
-  },
-  {
-    id: 3,
-    roomCode: "SOLANA789",
-    stakeAmount: 75,
-    hostPlayerWalletAddress: "Wallet789",
-    hostPlayerName: "BlockchainWarrior",
-    isPrivate: true,
-  },
-  {
-    id: 4,
-    roomCode: "WAR2022",
-    stakeAmount: 200,
-    hostPlayerWalletAddress: "Wallet101",
-    hostPlayerName: "TokenMaster",
-    isPrivate: false,
-  },
+  const [Rooms, setRooms] = useState([
+    {
+      id: 1,
+      roomCode: "GAME123",
+      stakeAmount: 50,
+      hostPlayerWalletAddress: "Wallet123",
+      hostPlayerName: "Player1",
+      isPrivate: false,
+    },
+    {
+      id: 2,
+      roomCode: "BATTLE456",
+      stakeAmount: 100,
+      hostPlayerWalletAddress: "Wallet456",
+      hostPlayerName: "CryptoGamer",
+      isPrivate: false,
+    },
+    {
+      id: 3,
+      roomCode: "SOLANA789",
+      stakeAmount: 75,
+      hostPlayerWalletAddress: "Wallet789",
+      hostPlayerName: "BlockchainWarrior",
+      isPrivate: true,
+    },
+    {
+      id: 4,
+      roomCode: "WAR2022",
+      stakeAmount: 200,
+      hostPlayerWalletAddress: "Wallet101",
+      hostPlayerName: "TokenMaster",
+      isPrivate: false,
+    },
   ]);
 
   const [lobbyCode, setLobbyCode] = useState("");
   const [stakeAmount, setStakeAmount] = useState("");
   const [isPrivate, setIsPrivate] = useState(false);
+  const [maxPlayers, setMaxPlayers] = useState(2);
   const [showWalletModal, setShowWalletModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [modalType, setModalType] = useState("host"); // 'host' or 'join'
@@ -143,15 +134,15 @@ function GamePage() {
   const [cgsCoins, setCgsCoins] = useState(0);
 
   useEffect(() => {
-    async function fetchGame(){
-      console.log("Fetching game data...",gameId);
+    async function fetchGame() {
+      console.log("Fetching game data...", gameId);
       const gameData = games[gameId];
       if (!gameData) {
         console.error("Game not found");
         return;
       }
       console.log("Game data:", gameData);
-      
+
       const response = await fetch("/api/getGameByGameId", {
         method: "POST",
         headers: {
@@ -166,8 +157,7 @@ function GamePage() {
       setRooms(data);
     }
     fetchGame();
-  }
-  , [gameId]);
+  }, [gameId]);
 
   useEffect(() => {
     const getCustomTokenBalance = async () => {
@@ -175,9 +165,11 @@ function GamePage() {
         console.error("Wallet not connected");
         return;
       }
-  
+
       try {
-        const mintAddress = new PublicKey("7nMwDDpFEc7PcAnnAmw8njf7o3dWNKvp8FHBabMW455q");
+        const mintAddress = new PublicKey(
+          "7nMwDDpFEc7PcAnnAmw8njf7o3dWNKvp8FHBabMW455q"
+        );
         const ata = await getAssociatedTokenAddress(mintAddress, publicKey);
         const tokenAccount = await connection.getTokenAccountBalance(ata);
         console.log(`Custom Token Balance: ${tokenAccount.value.uiAmount}`);
@@ -192,30 +184,97 @@ function GamePage() {
     }
   }, [publicKey, connection]);
 
-  async function transferTokens() {
+  // async function transferTokens() {
+  //   if (!publicKey) {
+  //     alert("Please connect your wallet first.");
+  //     return;
+  //   }
+
+  //   try {
+  //     const mint = new PublicKey(
+  //       "7nMwDDpFEc7PcAnnAmw8njf7o3dWNKvp8FHBabMW455q"
+  //     );
+  //     const destination = new PublicKey(
+  //       "gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD"
+  //     ); //Owner wallet address
+
+  //     const sourceAta = await getAssociatedTokenAddress(mint, publicKey);
+  //     const destinationAta = await getAssociatedTokenAddress(mint, destination);
+
+  //     const destinationAccount = await connection.getAccountInfo(
+  //       destinationAta
+  //     );
+  //     const instructions = [];
+
+  //     if (!destinationAccount) {
+  //       instructions.push(
+  //         createAssociatedTokenAccountInstruction(
+  //           publicKey, // payer
+  //           destinationAta, // ata
+  //           destination, // owner
+  //           mint // mint
+  //         )
+  //       );
+  //     }
+
+  //     // Add transfer instruction
+  //     instructions.push(
+  //       createTransferInstruction(
+  //         sourceAta, // source
+  //         destinationAta, // destination
+  //         publicKey, // owner (authority)
+  //         stakeAmount * 10 ** 9 // amount with decimals (assuming 9 decimals)
+  //       )
+  //     );
+
+  //     // Create transaction
+  //     const transaction = new Transaction().add(...instructions);
+
+  //     // Get latest blockhash
+  //     const { blockhash } = await connection.getLatestBlockhash();
+  //     transaction.recentBlockhash = blockhash;
+  //     transaction.feePayer = publicKey;
+
+  //     // Send transaction
+  //     const signature = await sendTransaction(transaction, connection);
+
+  //     // Wait for confirmation
+  //     const confirmation = await connection.confirmTransaction(
+  //       signature,
+  //       "confirmed"
+  //     );
+  //     console.log("Transaction confirmation:", confirmation);
+
+  //     console.log("Transaction confirmed:", signature);
+  //     alert(`Transfer successful! Transaction signature: ${signature}`);
+
+  //     return signature;
+  //   } catch (error) {
+  //     console.error("Error transferring tokens:", error);
+  //     alert(`Error: ${error.message}`);
+  //   }
+  // }
+
+    async function transferTokens() {
     if (!publicKey) {
       alert("Please connect your wallet first.");
       return;
     }
-    
+
     try {
-      
-      const mint = new PublicKey("7nMwDDpFEc7PcAnnAmw8njf7o3dWNKvp8FHBabMW455q");
-      const destination = new PublicKey("gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD");    //Owner wallet address
-      
-      const sourceAta = await getAssociatedTokenAddress(
-        mint,
-        publicKey
+      const mint = new PublicKey(
+        "7nMwDDpFEc7PcAnnAmw8njf7o3dWNKvp8FHBabMW455q"
       );
-      const destinationAta = await getAssociatedTokenAddress(
-        mint,
-        destination
-      );
-      
+      const destination = new PublicKey(
+        "gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD"
+      ); //Owner wallet address
+
+      const sourceAta = await getAssociatedTokenAddress(mint, publicKey);
+      const destinationAta = await getAssociatedTokenAddress(mint, destination);
 
       const destinationAccount = await connection.getAccountInfo(destinationAta);
       const instructions = [];
-      
+
       if (!destinationAccount) {
         instructions.push(
           createAssociatedTokenAccountInstruction(
@@ -226,38 +285,82 @@ function GamePage() {
           )
         );
       }
-      
+
       // Add transfer instruction
       instructions.push(
         createTransferInstruction(
           sourceAta, // source
           destinationAta, // destination
           publicKey, // owner (authority)
-          stakeAmount * (10 ** 9) // amount with decimals (assuming 9 decimals)
+          stakeAmount * 10 ** 9 // amount with decimals (assuming 9 decimals)
         )
       );
-      
+
       // Create transaction
       const transaction = new Transaction().add(...instructions);
-      
-      // Get latest blockhash
-      const { blockhash } = await connection.getLatestBlockhash();
+
+      // Get latest blockhash with longer validity
+      const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash('finalized');
       transaction.recentBlockhash = blockhash;
       transaction.feePayer = publicKey;
-      
+
       // Send transaction
       const signature = await sendTransaction(transaction, connection);
       
-      // Wait for confirmation
-      const confirmation = await connection.confirmTransaction(signature, 'confirmed');
+      console.log("Transaction sent:", signature);
       
-      console.log('Transaction confirmed:', signature);
-      alert(`Transfer successful! Transaction signature: ${signature}`);
+      // Improved confirmation approach with retry
+      const confirmationStrategy = {
+        signature,
+        blockhash,
+        lastValidBlockHeight
+      };
       
-      return signature;
+      try {
+        // Use a longer timeout and specify commitment level
+        const confirmation = await connection.confirmTransaction(confirmationStrategy, 'confirmed');
+        console.log("Transaction confirmation:", confirmation);
+        
+        if (confirmation.value.err) {
+          throw new Error(`Transaction failed: ${confirmation.value.err}`);
+        }
+        
+        console.log("Transaction confirmed:", signature);
+        alert(`Transfer successful! Transaction signature: ${signature}`);
+        return signature;
+      } catch (confirmError) {
+        // If confirmation fails, check if transaction is actually on chain
+        console.error("Confirmation error:", confirmError);
+        
+        // Try to get transaction status
+        try {
+          const status = await connection.getSignatureStatus(signature);
+          if (status && status.value && !status.value.err) {
+            console.log("Transaction successful despite confirmation error:", status);
+            alert(`Transfer appears successful! Check signature: ${signature}`);
+            return signature;
+          } else if (status && status.value && status.value.err) {
+            throw new Error(`Transaction failed: ${status.value.err}`);
+          }
+        } catch (statusError) {
+          console.error("Error checking transaction status:", statusError);
+          throw new Error(`Transaction may have failed: ${confirmError.message}. Please check signature ${signature} on Solana Explorer.`);
+        }
+        
+        throw confirmError;
+      }
     } catch (error) {
-      console.error('Error transferring tokens:', error);
+      console.error("Error transferring tokens:", error);
       alert(`Error: ${error.message}`);
+      
+      // If we have a transaction signature, guide the user to check it
+      if (error.message && error.message.includes("signature")) {
+        const signatureMatch = error.message.match(/signature\s+(\w+)/i);
+        if (signatureMatch && signatureMatch[1]) {
+          const extractedSignature = signatureMatch[1];
+          console.log(`You can check transaction status at: https://explorer.solana.com/tx/${extractedSignature}`);
+        }
+      }
     }
   }
 
@@ -269,7 +372,6 @@ function GamePage() {
     console.log("Public Key:", publicKey.toString());
     setShowWalletModal(false);
 
-
     // Transfer tokens to the host
     const transferSignature = await transferTokens();
     if (!transferSignature) {
@@ -278,11 +380,10 @@ function GamePage() {
     }
     console.log("Token transfer successful, signature:", transferSignature);
 
-    if(modalType === "join" && selectedRoom){
+    if (modalType === "join" && selectedRoom) {
       console.log("Joining room:", selectedRoom.roomCode);
       const lobbyCode = selectedRoom.roomCode;
       console.log("Joining room with code:", lobbyCode);
-
 
       const response = await fetch("/api/joinRoom", {
         method: "POST",
@@ -300,7 +401,7 @@ function GamePage() {
       setShowSuccessModal(true);
       return;
     }
-    
+
     console.log("Hosting room with code:", lobbyCode);
 
     //call api to host -> url -> /api/hostRoom
@@ -328,11 +429,11 @@ function GamePage() {
     setModalType("join");
     setSelectedRoom(room);
     setStakeAmount(room.stakeAmount);
-    
+
     setShowWalletModal(true);
   };
 
-  const handleStake= () => {
+  const handleStake = () => {
     console.log("Public Key:", publicKey.toString());
     handleGame();
     setIsConnecting(false);
@@ -343,19 +444,37 @@ function GamePage() {
 
     // If it was a host game, redirect to game link
     if (modalType === "host") {
-      const link = game.link +"player_id=" + user.playerName +  "?roomCode=" + lobbyCode + "&stakeAmount=" + stakeAmount +"&wallet_address="+publicKey.toString() ;//unitydl://mylink?player_id=1234&wallet_address=1312321&name=vedant
+      const link =
+        game.link +
+        "player_id=" +
+        user.playerName +
+        "?roomCode=" +
+        lobbyCode +
+        "&stakeAmount=" +
+        stakeAmount +
+        "&wallet_address=" +
+        publicKey.toString(); //unitydl://mylink?player_id=1234&wallet_address=1312321&name=vedant
       window.open(link, "_blank");
     } else if (modalType === "join" && selectedRoom) {
-      const link = game.link +"player_id=" + user.playerName +  "?roomCode=" + lobbyCode + "&stakeAmount=" + stakeAmount +"&wallet_address="+publicKey.toString() ;//unitydl://mylink?player_id=1234&wallet_address=1312321&name=vedant
+      const link =
+        game.link +
+        "player_id=" +
+        user.playerName +
+        "?roomCode=" +
+        lobbyCode +
+        "&stakeAmount=" +
+        stakeAmount +
+        "&wallet_address=" +
+        publicKey.toString(); //unitydl://mylink?player_id=1234&wallet_address=1312321&name=vedant
       window.open(link, "_blank");
     }
   };
-  const [isConnecting, setIsConnecting] = useState(false)
+  const [isConnecting, setIsConnecting] = useState(false);
 
   const handleConnect = () => {
-    setIsConnecting(true)
+    setIsConnecting(true);
     handleStake();
-  }
+  };
   return (
     <div className="container mx-auto px-4 py-12">
       <motion.h1
@@ -374,8 +493,13 @@ function GamePage() {
       >
         {game.description}
       </motion.p>
-
-      
+      <div className="flex items-center mb-4">
+      <WalletConnectionProvider1>
+        <WalletMultiButton className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-md px-4 py-2" /> 
+      </WalletConnectionProvider1>
+      <br></br>
+      <br></br>
+      </div>
 
       <Tabs defaultValue="host" className="w-full">
         <TabsList className="grid w-full max-w-md grid-cols-2 mb-8">
@@ -387,9 +511,6 @@ function GamePage() {
           </TabsTrigger>
         </TabsList>
 
-
-        
-
         <TabsContent value="host" className="space-y-8">
           <motion.div
             className="bg-gray-800/50 border border-purple-900/30 rounded-xl p-6"
@@ -399,21 +520,22 @@ function GamePage() {
           >
             <h2 className="text-2xl font-bold mb-4">Instructions</h2>
             <p className="text-gray-300 mb-6">
-              Download the game and install it. Once installed, you can host a game
-              by entering a unique room code. You can choose to make the game private
-              or public. If you choose private, only players with the code can join.
-
-
-              Choose any lobby code and stake some amount to play. You will be
-              redirected to the game. Wait for someone to join the room and play
-              the game. If you win, you can claim your reward from the rewards
-              page, else you will lose all stake.
+              Download the game and install it. Once installed, you can host a
+              game by entering a unique room code. You can choose to make the
+              game private or public. If you choose private, only players with
+              the code can join. Choose any lobby code and stake some amount to
+              play. You will be redirected to the game. Wait for someone to join
+              the room and play the game. If you win, you can claim your reward
+              from the rewards page, else you will lose all stake.
             </p>
-               <Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700" onClick={handleZip}>
-                Download
-              </Button>
-              <br></br>
-              <br></br>
+            <Button
+              className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+              onClick={handleZip}
+            >
+              Download
+            </Button>
+            <br></br>
+            <br></br>
 
             <div className="space-y-6">
               <div>
@@ -426,6 +548,28 @@ function GamePage() {
                   onChange={(e) => setLobbyCode(e.target.value)}
                 />
               </div>
+
+              {/* <div>
+                <Label htmlFor="stake-amount">Max Players</Label>
+                <div className="relative mt-2">
+                  <Input
+                    id="stake-amount"
+                    type="number"
+                    placeholder="Enter max players"
+                    className="bg-gray-900 border-gray-700 pl-10"
+                    value={maxPlayers}
+                    onChange={(e) => setMaxPlayers(e.target.value)}
+                  />
+                  <Wallet className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                </div>
+              </div> 
+
+              due to time constraint , we are not implementing max players ....but it can be done easily
+              
+              
+              */}
+                
+
 
               <div>
                 <Label htmlFor="stake-amount">Stake Amount (SOL)</Label>
@@ -463,9 +607,9 @@ function GamePage() {
 
               <Button
                 className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
-                onClick={()=>{
-                    setModalType("host");
-                    setShowWalletModal(true);
+                onClick={() => {
+                  setModalType("host");
+                  setShowWalletModal(true);
                 }}
                 disabled={!lobbyCode || !stakeAmount}
               >
@@ -485,7 +629,7 @@ function GamePage() {
             <h2 className="text-2xl font-bold mb-4">Available Rooms</h2>
 
             <div className="space-y-4">
-              {Rooms.map((room,index) => (
+              {Rooms.map((room, index) => (
                 <RoomCard
                   key={index}
                   room={room}
@@ -506,84 +650,91 @@ function GamePage() {
         </TabsContent>
       </Tabs>
 
-
       <AnimatePresence>
-      {showWalletModal && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50"
-          onClick={() => setShowWalletModal(false)}
-        >
+        {showWalletModal && (
           <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.9, opacity: 0 }}
-            className="bg-gray-900 border border-purple-900/30 rounded-xl p-6 w-full max-w-md"
-            onClick={(e) => e.stopPropagation()}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50"
+            onClick={() => setShowWalletModal(false)}
           >
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-bold">Connect Wallet</h2>
-              <button onClick={() => setShowWalletModal(false)} className="text-gray-400 hover:text-white">
-                <X className="h-5 w-5" />
-              </button>
-            </div>
-            
-
-            <div className="text-center mb-8">
-              <div className="bg-gray-800 rounded-full h-20 w-20 flex items-center justify-center mx-auto mb-4">
-                <Wallet className="h-10 w-10 text-purple-400" />
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-gray-900 border border-purple-900/30 rounded-xl p-6 w-full max-w-md"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-xl font-bold">Connect Wallet</h2>
+                <button
+                  onClick={() => setShowWalletModal(false)}
+                  className="text-gray-400 hover:text-white"
+                >
+                  <X className="h-5 w-5" />
+                </button>
               </div>
 
-              <p className="text-gray-300 mb-2">
-                {modalType === "host"
-                  ? "Stake Tokens to host this game"
-                  : "Stake Tokens to join this game"}
-              </p>
+              <div className="text-center mb-8">
+                <div className="bg-gray-800 rounded-full h-20 w-20 flex items-center justify-center mx-auto mb-4">
+                  <Wallet className="h-10 w-10 text-purple-400" />
+                </div>
 
-              {modalType === "host" ? stakeAmount : selectedRoom?.stake && <p className="text-lg font-bold text-purple-400">Stake Amount: {modalType === "host" ? stakeAmount : selectedRoom?.stake} SOL</p>}
-            </div>
+                <p className="text-gray-300 mb-2">
+                  {modalType === "host"
+                    ? "Stake Tokens to host this game"
+                    : "Stake Tokens to join this game"}
+                </p>
+
+                {modalType === "host"
+                  ? stakeAmount
+                  : selectedRoom?.stake && (
+                      <p className="text-lg font-bold text-purple-400">
+                        Stake Amount:{" "}
+                        {modalType === "host"
+                          ? stakeAmount
+                          : selectedRoom?.stake}{" "}
+                        SOL
+                      </p>
+                    )}
+              </div>
 
               <WalletConnectionProvider1>
-                    <WalletMultiButton className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-md px-4 py-2" />
-                  </WalletConnectionProvider1>
+                <WalletMultiButton className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-md px-4 py-2" />
+              </WalletConnectionProvider1>
 
-                    <br></br>
-                    <br></br>
-                    <div className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-md px-4 py-2">
-                     CGS COINS : {cgsCoins}
-                     </div>
-                  <div className="ml-2 text-gray-400">
-                    <Coins className="h-5 w-5" />
+              <br></br>
+              <br></br>
+              <div className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-md px-4 py-2">
+                CGS COINS : {cgsCoins}
+              </div>
+              <div className="ml-2 text-gray-400">
+                <Coins className="h-5 w-5" />
+              </div>
 
+              <Button
+                className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 h-12"
+                onClick={handleConnect}
+                disabled={isConnecting}
+              >
+                {isConnecting ? (
+                  <div className="flex items-center">
+                    <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full mr-2"></div>
+                    Staking...
                   </div>
-
-            <Button
-              className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 h-12"
-              onClick={handleConnect}
-              disabled={isConnecting}
-            >
-
-
-              {isConnecting ? (
-                <div className="flex items-center">
-                  
-                  <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full mr-2"></div>
-                  Staking...
-                </div>
-              ) : (
-                "Stake Tokens"
-              )}
-            </Button>
-            <p className="text-xs text-gray-500 text-center mt-4">
-              By connecting your wallet, you agree to our Terms of Service and Privacy Policy.
-            </p>
+                ) : (
+                  "Stake Tokens"
+                )}
+              </Button>
+              <p className="text-xs text-gray-500 text-center mt-4">
+                By connecting your wallet, you agree to our Terms of Service and
+                Privacy Policy.
+              </p>
+            </motion.div>
           </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
-   
+        )}
+      </AnimatePresence>
 
       <SuccessModal
         isOpen={showSuccessModal}
@@ -597,8 +748,6 @@ function GamePage() {
 function WalletConnectionProvider1({ children }) {
   const endpoint = useMemo(() => clusterApiUrl("devnet"), []);
   const wallets = useMemo(() => [], []); // Add specific wallets here if needed
-  
-
 
   return (
     <ConnectionProvider endpoint={endpoint}>
@@ -612,8 +761,6 @@ function WalletConnectionProvider1({ children }) {
 export default function WalletConnectionProvider({ children }) {
   const endpoint = useMemo(() => clusterApiUrl("devnet"), []);
   const wallets = useMemo(() => [], []); // Add specific wallets here if needed
-  
-
 
   return (
     <ConnectionProvider endpoint={endpoint}>
@@ -624,4 +771,3 @@ export default function WalletConnectionProvider({ children }) {
     </ConnectionProvider>
   );
 }
-

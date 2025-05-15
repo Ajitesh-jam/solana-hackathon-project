@@ -106,7 +106,12 @@ import { createKeyPairSignerFromBytes } from "gill";
   );
 
   const secretKey = Uint8Array.from(
-    process.env.PVT_KEY_gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD
+   [
+  183, 21, 103, 85, 51, 40, 44, 31, 140, 105, 15, 211, 100, 34, 42, 227, 86,
+  243, 164, 50, 237, 149, 192, 32, 176, 74, 227, 248, 68, 189, 149, 72, 10, 22,
+  123, 99, 59, 252, 51, 236, 150, 127, 62, 62, 244, 191, 154, 115, 151, 64, 168,
+  120, 188, 116, 219, 131, 244, 250, 12, 196, 105, 69, 204, 166
+]
   );
 
   // Base58 encode the secret key
@@ -122,7 +127,7 @@ const signer = await createKeyPairSignerFromBytes(bs58.decode(base58SecretKey));
   //   )
   // );
 
-  const keypair = Keypair.fromSecretKey(bs58.decode(base58SecretKey));
+const keypair = Keypair.fromSecretKey(bs58.decode(base58SecretKey));
 const feePayer = keypair;
 
 
@@ -187,7 +192,7 @@ const feePayer = keypair;
       mintPubkey,
       correctTokenAccount,
       feePayer,  // mint authority
-      6e9,
+      100e9,
       9,
       undefined,
       undefined,
