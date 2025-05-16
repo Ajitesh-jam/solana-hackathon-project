@@ -11,7 +11,7 @@ const games = [
     id: "solanabattlefield",
     name: "Solana Battlefield",
     description: "Intense multiplayer battles with strategic gameplay and high stakes rewards.",
-    image: "/placeholder.svg?height=600&width=800",
+    image: "/images/download24.jpeg?height=600&width=800",
     link: "/games/solanabattlefield",
     downloadLink:"/multi.zip"
   },
@@ -19,7 +19,7 @@ const games = [
     id: "solanaops",
     name: "Solana Ops",
     description: "Tactical team-based missions with real-time combat and blockchain rewards.",
-    image: "/placeholder.svg?height=600&width=800",
+    image: "/images/download25.jpeg?height=600&width=800",
     link: "/games/solanaops",
     downloadLink:"/multi.zip"
   },
@@ -27,7 +27,7 @@ const games = [
     id: "callofduty",
     name: "Call of Duty",
     description: "The legendary FPS now with Solana integration. Stake, play, and earn.",
-    image: "/placeholder.svg?height=600&width=800",
+    image: "/images/download26.jpeg?height=600&width=800",
     link: "/games/callofduty",
     downloadLink:"/multi.zip"
   },
