@@ -9,10 +9,10 @@ mint: 7nMwDDpFEc7PcAnnAmw8njf7o3dWNKvp8FHBabMW455q
 (base) ajiteshjamulkar@Ajiteshs-MacBook-Pro token % node getTokenMint2.mjs 
 Connecting to Solana network: devnet
 Connection established
-Using mint address: MINT_ADDRESS
+Using mint address: process.env.MINT_ADDRESS
 Fetching token information...
 {
-  address: PublicKey [PublicKey(MINT_ADDRESS)] {
+  address: PublicKey [PublicKey(process.env.MINT_ADDRESS)] {
     _bn: <BN: 64c4edca71fcf242c5039c15406af82374dcac6657021ececc9972407dab0870>
   },
   mintAuthority: PublicKey [PublicKey(gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD)] {
@@ -47,7 +47,7 @@ ata: {
     },
     { address: 'gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD', role: 0 },
     {
-      address: 'MINT_ADDRESS',
+      address: 'process.env.MINT_ADDRESS',
       role: 0
     },
     { address: '11111111111111111111111111111111', role: 0 },
@@ -66,7 +66,7 @@ Using token account address: EwCTppEs8y7zuzRHGD54GDWXYwiHxCkvqAKZp8K2T7GZ
   address: PublicKey [PublicKey(EwCTppEs8y7zuzRHGD54GDWXYwiHxCkvqAKZp8K2T7GZ)] {
     _bn: <BN: cf0a4121104130afe0112693e50a6588bbfc3ba579717b28964da5ca3c67edfe>
   },
-  mint: PublicKey [PublicKey(MINT_ADDRESS)] {
+  mint: PublicKey [PublicKey(process.env.MINT_ADDRESS)] {
     _bn: <BN: 64c4edca71fcf242c5039c15406af82374dcac6657021ececc9972407dab0870>
   },
   owner: PublicKey [PublicKey(gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD)] {
@@ -97,7 +97,7 @@ decimals: 9
 (base) ajiteshjamulkar@Ajiteshs-MacBook-Pro token % node mintTokens6.mjs
 (node:16765) ExperimentalWarning: The Ed25519 Web Crypto API algorithm is an experimental feature and might change at any time
 (Use `node --trace-warnings ...` to show where the warning was created)
-mintPubkey: MINT_ADDRESS
+mintPubkey: process.env.MINT_ADDRESS
 Using token account address: EwCTppEs8y7zuzRHGD54GDWXYwiHxCkvqAKZp8K2T7GZ
 ATA: EwCTppEs8y7zuzRHGD54GDWXYwiHxCkvqAKZp8K2T7GZ
 Correct ATA: EwCTppEs8y7zuzRHGD54GDWXYwiHxCkvqAKZp8K2T7GZ

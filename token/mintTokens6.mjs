@@ -146,7 +146,7 @@ const feePayer = keypair;
 //   await connection.confirmTransaction(airdropSig);
 
   const mintPubkey = new PublicKey(
-    "MINT_ADDRESS"
+    "process.env.MINT_ADDRESS"
   );
  
   console.log(`mintPubkey: ${mintPubkey}`);

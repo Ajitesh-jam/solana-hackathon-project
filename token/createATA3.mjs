@@ -43,7 +43,7 @@ import {
   const { value: latestBlockhash } = await rpc.getLatestBlockhash().send();
   
   const tokenProgram = TOKEN_PROGRAM_ADDRESS;
-  const mint = address("MINT_ADDRESS");
+  const mint = address("process.env.MINT_ADDRESS");
   
   const destination = address("gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD");
   const destinationAta = await getAssociatedTokenAccountAddress(

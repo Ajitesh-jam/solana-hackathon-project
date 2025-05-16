@@ -35,7 +35,7 @@ Welcome to the CGS Token project! This repository contains both the token deploy
      187, 21,......162
    ]"
 
-   MINT_ADDRESS="7nMwDDpFEc7PcAnnAmw8njf7o3dWNKvp8FHBabMW455q"
+   process.env.MINT_ADDRESS="7nMwDDpFEc7PcAnnAmw8njf7o3dWNKvp8FHBabMW455q"
    ```
 
 ---
@@ -80,5 +80,5 @@ After deploying the token, set up the frontend to interact with it.
 
 ## 📬 Contact
 
-For any issues or queries, feel free  to contact : ajitesh.jam@gmail.com or raise an issue or contribute to the project! 
+For any issues or queries, feel free  to contact : ajitesh.jam@gmail.com orc raise an issue or contribute to the project! 
 

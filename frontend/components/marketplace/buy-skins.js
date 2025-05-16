@@ -301,7 +301,7 @@ export default function BuySkins() {
 
     try {
       const mint = new PublicKey(
-        "MINT_ADDRESS"
+        "process.env.MINT_ADDRESS"
       );
       const destination = new PublicKey(skin.gameCompanyWalletAddress); //Game company wallet address
 
@@ -370,7 +370,7 @@ export default function BuySkins() {
 
     try {
       const mint = new PublicKey(
-        "MINT_ADDRESS"
+        "process.env.MINT_ADDRESS"
       );
       console.log(" skin:", skin.gameCompanyWalletAddress, "listing:", listing.sellerWalletAddress);
       const gameCompany = new PublicKey(skin.gameCompanyWalletAddress); // Game company wallet address

@@ -38,7 +38,7 @@ const signer = await createKeyPairSignerFromBytes(bs58.decode(base58SecretKey));
   
   const { value: latestBlockhash } = await rpc.getLatestBlockhash().send();
   
-  const mint = address("MINT_ADDRESS");
+  const mint = address("process.env.MINT_ADDRESS");
   const tokenProgram = TOKEN_PROGRAM_ADDRESS; // use the correct program for the `mint`
   
   const destination = address("FwihGJFQ2Qe1p5hfsLMokFosfm5wMWD3nDZYnD8M9bt6");

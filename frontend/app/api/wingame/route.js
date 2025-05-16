@@ -59,7 +59,7 @@ export async function POST(req) {
     console.log("Mint authority address:", mintAuthority.publicKey.toString());
     
     // Token mint address 
-    const mintAddress = new PublicKey("MINT_ADDRESS");
+    const mintAddress = new PublicKey(process.env.MINT_ADDRESS);
     console.log("Token mint address:", mintAddress.toString());
     
     // Verify mint authority
