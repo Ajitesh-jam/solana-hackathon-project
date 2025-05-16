@@ -48,15 +48,15 @@ const games = {
     name: "Solana Ops",
     description:
       "Tactical team-based missions with real-time combat and blockchain rewards.",
-    link: "https://example.com/solanaops",
+    link: "unitydl://mylink?",
     downloadLink: "/multi.zip",
   },
   callofduty: {
     name: "Call of Duty",
     description:
       "The legendary FPS now with Solana integration. Stake, play, and earn.",
-    link: "https://example.com/callofduty",
-    downloadLink: "/multi.zip",
+    link: "unitydl://mylink?",
+    downloadLink: "https://drive.google.com/file/d/1UA2VMDMY6_0z2U33d5op04kC1qsLqauI/view",
   },
 };
 
@@ -443,29 +443,40 @@ function GamePage() {
     setShowSuccessModal(false);
 
     // If it was a host game, redirect to game link
+
+    //unitydl://mylink?name=Alice&player_id=12345&wallet_address=0xABC123DEF456&tokens=500&room_code=NEWROOM&skin_ids=1,3,5
     if (modalType === "host") {
       const link =
         game.link +
-        "player_id=" +
+        "name=" +
         user.playerName +
-        "roomCode=" +
-        lobbyCode +
-        "&stakeAmount=" +
-        stakeAmount +
+        "&player_id=" +
+        user.playerName +
         "&wallet_address=" +
-        publicKey.toString(); //unitydl://mylink?player_id=1234&wallet_address=1312321&name=vedant
-      window.open(link, "_blank");
-    } else if (modalType === "join" && selectedRoom) {
-      const link =
+        publicKey.toString() + 
+        "&tokens=" +
+        stakeAmount +
+        "&room_code=" +
+        lobbyCode +
+        "&skin_ids=" +
+        user.skins.join(",") ;
+        window.open(link, "_blank");
+      } else if (modalType === "join" && selectedRoom) {
+        const link =
         game.link +
-        "player_id=" +
+        "name=" +
         user.playerName +
-        "?roomCode=" +
-        lobbyCode +
-        "&stakeAmount=" +
-        stakeAmount +
+        "&player_id=" +
+        user.playerName +
         "&wallet_address=" +
-        publicKey.toString(); //unitydl://mylink?player_id=1234&wallet_address=1312321&name=vedant
+        publicKey.toString() + 
+        "&tokens=" +
+        stakeAmount +
+        "&room_code=" +
+        lobbyCode +
+        "&skin_ids=" +
+        user.skins.join(",") ;
+        
       window.open(link, "_blank");
     }
   };
