@@ -89,7 +89,7 @@ const WalletApp = () => {
     }
 
     try {
-      const mintAddress = new PublicKey("7nMwDDpFEc7PcAnnAmw8njf7o3dWNKvp8FHBabMW455q");
+      const mintAddress = new PublicKey("MINT_ADDRESS");
       const ata = await getAssociatedTokenAddress(mintAddress, publicKey);
       const tokenAccount = await connection.getTokenAccountBalance(ata);
       console.log(`Custom Token Balance: ${tokenAccount.value.uiAmount}`);
@@ -106,7 +106,7 @@ const WalletApp = () => {
 
     try {
       // Define the mint, token program, and destination
-      const mint = new PublicKey("7nMwDDpFEc7PcAnnAmw8njf7o3dWNKvp8FHBabMW455q");
+      const mint = new PublicKey("MINT_ADDRESS");
       const destination = new PublicKey("3BRrDyJrAo3ihd9SwuVy3CAQW2xaNZnHnqiphmYFt1rc");
       
       // Get the associated token addresses for source and destination

@@ -26,8 +26,8 @@
 // // (async () => {
 // //   await new Promise(resolve => setTimeout(resolve, 2000));
 
-// //   if(!process.env.PVT_KEY_gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD) {
-// //     console.log("Please set your PVT_KEY_gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD in .env file");
+// //   if(!process.env.PVT_KEY_ownerAddress) {
+// //     console.log("Please set your PVT_KEY_ownerAddress in .env file");
 // //     return;
 // //   }
 // //   console.log("Create Token");
@@ -39,7 +39,7 @@
 
 // //   // 5YNmS1R9nNSCDzb5a7mMJ1dwK9uHeAAF4CmPEwKgVWr8
 
-// //   const seed = bip39.mnemonicToSeedSync(process.env.PVT_KEY_gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD,"");
+// //   const seed = bip39.mnemonicToSeedSync(process.env.PVT_KEY_ownerAddress,"");
 // //   const keypair = Keypair.fromSeed(seed.slice(0, 32));
 // //   // const feePayer = Keypair.fromSecretKey(
 // //   //   bs58.decode(
@@ -127,11 +127,11 @@
 // import dotenv from "dotenv";
 // dotenv.config();
 
-// if (!process.env.PVT_KEY_gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD) {
+// if (!process.env.PVT_KEY_ownerAddress) {
 //   throw new Error("Environment variable PVT_KEY_Cq4xMP2aGabszie3CVYrZCEFD29SPSxYhSjdEwENZai5 is not set");
 // }
-// //const secretKey = Uint8Array.from(process.env.PVT_KEY_gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD.split(",").map(Number));
-// const secretKey = Uint8Array.from(process.env.PVT_KEY_gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD.split(",").map(Number));
+// //const secretKey = Uint8Array.from(process.env.PVT_KEY_ownerAddress.split(",").map(Number));
+// const secretKey = Uint8Array.from(process.env.PVT_KEY_ownerAddress.split(",").map(Number));
 
 // const walletKeypair = Keypair.fromSecretKey(secretKey);
 

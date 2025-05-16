@@ -168,7 +168,7 @@ function GamePage() {
 
       try {
         const mintAddress = new PublicKey(
-          "7nMwDDpFEc7PcAnnAmw8njf7o3dWNKvp8FHBabMW455q"
+          "MINT_ADDRESS"
         );
         const ata = await getAssociatedTokenAddress(mintAddress, publicKey);
         const tokenAccount = await connection.getTokenAccountBalance(ata);
@@ -192,7 +192,7 @@ function GamePage() {
 
   //   try {
   //     const mint = new PublicKey(
-  //       "7nMwDDpFEc7PcAnnAmw8njf7o3dWNKvp8FHBabMW455q"
+  //       "MINT_ADDRESS"
   //     );
   //     const destination = new PublicKey(
   //       "gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD"
@@ -263,7 +263,7 @@ function GamePage() {
 
     try {
       const mint = new PublicKey(
-        "7nMwDDpFEc7PcAnnAmw8njf7o3dWNKvp8FHBabMW455q"
+        "MINT_ADDRESS"
       );
       const destination = new PublicKey(
         "gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD"
@@ -476,7 +476,6 @@ function GamePage() {
         lobbyCode +
         "&skin_ids=" +
         user.skins.join(",") ;
-        
       window.open(link, "_blank");
     }
   };

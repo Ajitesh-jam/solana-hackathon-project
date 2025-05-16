@@ -25,7 +25,7 @@ import {
   );
   
   const secretKey = Uint8Array.from(
-    process.env.PVT_KEY_gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD
+    process.env.PVT_KEY_ownerAddress
   );
 
   // Base58 encode the secret key
@@ -43,7 +43,7 @@ import {
   const { value: latestBlockhash } = await rpc.getLatestBlockhash().send();
   
   const tokenProgram = TOKEN_PROGRAM_ADDRESS;
-  const mint = address("7nMwDDpFEc7PcAnnAmw8njf7o3dWNKvp8FHBabMW455q");
+  const mint = address("MINT_ADDRESS");
   
   const destination = address("gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD");
   const destinationAta = await getAssociatedTokenAccountAddress(

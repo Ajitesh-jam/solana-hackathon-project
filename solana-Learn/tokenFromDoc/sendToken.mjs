@@ -33,8 +33,8 @@ import {
     await connection.confirmTransaction(fromAirdropSignature);
   
     // Generate a new wallet to receive newly minted token
-    //const secretKey = Uint8Array.from(process.env.PVT_KEY_gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD.split(",").map(Number));
-    const secretKey = Uint8Array.from(process.env.PVT_KEY_gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD.split(",").map(Number));
+    //const secretKey = Uint8Array.from(process.env.PVT_KEY_ownerAddress.split(",").map(Number));
+    const secretKey = Uint8Array.from(process.env.PVT_KEY_ownerAddress.split(",").map(Number));
 
     const walletKeypair = Keypair.fromSecretKey(secretKey);
     console.log(`📝 Wallet public key: ${walletKeypair.publicKey.toBase58()}`);

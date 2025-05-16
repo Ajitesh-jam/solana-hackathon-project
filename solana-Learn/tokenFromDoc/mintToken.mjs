@@ -40,8 +40,8 @@ import {
       console.log(`📝 Mint authority public key: ${mintAuthority.publicKey.toBase58()}`);
 
               // Generate a new wallet to receive newly minted token
-      //const secretKey = Uint8Array.from(process.env.PVT_KEY_gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD.split(",").map(Number));
-      const secretKey = Uint8Array.from(process.env.PVT_KEY_gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD.split(",").map(Number));
+      //const secretKey = Uint8Array.from(process.env.PVT_KEY_ownerAddress.split(",").map(Number));
+      const secretKey = Uint8Array.from(process.env.PVT_KEY_ownerAddress.split(",").map(Number));
 
       const walletKeypair = Keypair.fromSecretKey(secretKey);
       console.log(`📝 Wallet public key: ${walletKeypair.publicKey.toBase58()}`);
@@ -192,7 +192,7 @@ import {
 //   // connection
 //   const connection = new Connection("http://127.0.0.1:8899", "confirmed");
 //     // Generate a new wallet to receive newly minted token
-//   //const secretKey = Uint8Array.from(process.env.PVT_KEY_gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD.split(",").map(Number));
+//   //const secretKey = Uint8Array.from(process.env.PVT_KEY_ownerAddress.split(",").map(Number));
 //   const secretKey = Uint8Array.from([183, 21, 103, 85, 51, 40, 44, 31, 140, 105, 15, 211, 100, 34, 42, 227, 86,
 //     243, 164, 50, 237, 149, 192, 32, 176, 74, 227, 248, 68, 189, 149, 72, 10, 22,
 //     123, 99, 59, 252, 51, 236, 150, 127, 62, 62, 244, 191, 154, 115, 151, 64, 168,

@@ -15,7 +15,7 @@ dotenv.config();
   const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
 
   // Secret key as Uint8Array
-  const secretKey = Uint8Array.from(process.env.PVT_KEY_gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD);
+  const secretKey = Uint8Array.from(process.env.PVT_KEY_ownerAddress);
 
   // Convert to Keypair for Solana compatibility
   const keypair = Keypair.fromSecretKey(secretKey);

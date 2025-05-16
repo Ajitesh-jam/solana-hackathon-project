@@ -46,10 +46,10 @@ export async function POST(req) {
     
     // Get the mint authority private key (stored securely)
     // If the key is in array format
-    console.log("pvt key ", process.env.PVT_KEY_gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD);
+    console.log("pvt key ", process.env.PVT_KEY_ownerAddress);
 
 
-    const privateKeyString = process.env.PVT_KEY_gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD;
+    const privateKeyString = process.env.PVT_KEY_ownerAddress;
     const privateKeyArray = JSON.parse(privateKeyString);
     const secretKey = Uint8Array.from(privateKeyArray);
 
@@ -60,7 +60,7 @@ export async function POST(req) {
     console.log("Mint authority address:", mintAuthority.publicKey.toString());
     
     // Token mint address 
-    const mintAddress = new PublicKey("7nMwDDpFEc7PcAnnAmw8njf7o3dWNKvp8FHBabMW455q");
+    const mintAddress = new PublicKey("MINT_ADDRESS");
     console.log("Token mint address:", mintAddress.toString());
     
     // Verify mint authority

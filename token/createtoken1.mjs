@@ -31,7 +31,7 @@
 //   }
 // );
 
-// const secretKey = Uint8Array.from(process.env.PVT_KEY_gNxgyDEgJqCctLSsir6DgMTe8vyktX7q6LkFLMmS2tD);
+// const secretKey = Uint8Array.from(process.env.PVT_KEY_ownerAddress);
 
 // // Base58 encode the secret key
 // const base58SecretKey = bs58.encode(secretKey);
