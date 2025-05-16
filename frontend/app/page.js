@@ -70,8 +70,8 @@ export default function Home() {
     <div className="min-h-screen bg-gradient-to-b from-black to-gray-900">
       {/* Hero Section */}
       <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/placeholder.svg?height=1080&width=1920')] bg-cover bg-center opacity-20"></div>
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black"></div>
+      <div className="absolute inset-0 bg-[url('/images/download27.jpg?height=1080&width=1920')] bg-cover bg-center opacity-20"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black"></div>
 
         <div className="container mx-auto px-4 relative z-10">
           <motion.div
