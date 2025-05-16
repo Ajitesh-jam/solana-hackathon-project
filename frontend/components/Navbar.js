@@ -64,7 +64,7 @@
 //                   <DropdownMenuTrigger asChild>
 //                     <Button variant="ghost" className="relative h-10 w-10 rounded-full">
 //                       <Avatar className="h-10 w-10 border border-gray-700">
-//                         <AvatarImage src="/placeholder.svg?height=40&width=40" alt="User" />
+//                         <AvatarImage src="/cod.png?height=40&width=40" alt="User" />
 //                         <AvatarFallback>{user.playerName?.charAt(0) || "U"}</AvatarFallback>
 //                       </Avatar>
 //                     </Button>
@@ -153,7 +153,7 @@
 //                 <div className="flex items-center justify-between">
 //                   <div className="flex items-center">
 //                     <Avatar className="h-10 w-10 mr-3 border border-gray-700">
-//                       <AvatarImage src="/placeholder.svg?height=40&width=40" alt="User" />
+//                       <AvatarImage src="/cod.png?height=40&width=40" alt="User" />
 //                       <AvatarFallback>{user.playerName?.charAt(0) || "U"}</AvatarFallback>
 //                     </Avatar>
 //                     <div>

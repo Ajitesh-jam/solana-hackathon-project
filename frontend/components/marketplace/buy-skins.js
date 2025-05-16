@@ -39,17 +39,17 @@ const games = [
   {
     id: "solanabattlefield",
     name: "Solana Battleground",
-    icon: "/placeholder.svg?height=50&width=50",
+    icon: "/cod.png?height=50&width=50",
   },
   {
     id: "solanabattlefield",
     name: "Solana Ops",
-    icon: "/placeholder.svg?height=50&width=50",
+    icon: "/cod.png?height=50&width=50",
   },
   {
     id: "solanabattlefield",
     name: "Call of Duty",
-    icon: "/placeholder.svg?height=50&width=50",
+    icon: "/cod.png?height=50&width=50",
   },
 ];
 
@@ -742,7 +742,7 @@ export default function BuySkins() {
               onClick={() => setSelectedGame(game.id)}
             >
               <img
-                src={game.icon || "/placeholder.svg"}
+                src={game.icon || "/cod.png"}
                 alt={game.name}
                 className="w-4 h-4 mr-2 rounded-full"
               />

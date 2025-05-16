@@ -13,7 +13,7 @@ import Image from "next/image"
 export default function ProfilePage() {
     const [user, setUser] = useState({
     name: "CryptoGamer",
-    image: "/placeholder.svg?height=200&width=200",
+    image: "/cod.png?height=200&width=200",
     wallet: "0x1a2b...3c4d",
     tokens: 1250,
     joinedDate: "2023-01-15",
@@ -25,7 +25,7 @@ export default function ProfilePage() {
   // Mock user data
   const userData = {
     name: user?.playerName || "CryptoGamer",
-    image: "/placeholder.svg?height=200&width=200",
+    image: "/cod.png?height=200&width=200",
     wallet: "8xH4Zw9Y3mKn2TjP...",
     tokens: 750,
     joinDate: "January 2023",
@@ -100,7 +100,7 @@ export default function ProfilePage() {
             <CardContent>
               <div className="flex flex-col items-center text-center mb-6">
                 {/* <Avatar className="w-24 h-24 mb-4 border-2 border-purple-500">
-                  <AvatarImage src={"/placeholder.svg"} alt={user.playerName} />
+                  <AvatarImage src={"/cod.png"} alt={user.playerName} />
                  
                   
                 </Avatar> */}

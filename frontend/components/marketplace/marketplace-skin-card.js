@@ -34,7 +34,7 @@ export default function MarketplaceSkinCard({ listing, skin, onBuy }) {
     >
       <div className="relative h-48 overflow-hidden">
         <Image
-          src={skin.image || "/placeholder.svg"}
+          src={skin.image || "/cod.png"}
           alt={skin.name}
           fill
           className="object-cover transition-transform duration-500 group-hover:scale-110"

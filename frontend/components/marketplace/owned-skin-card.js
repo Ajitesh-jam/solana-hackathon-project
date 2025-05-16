@@ -60,7 +60,7 @@ export default function OwnedSkinCard({ skin, onSell }) {
       >
         <div className="relative h-48 overflow-hidden">
           <Image
-            src={skin.image || "/placeholder.svg"}
+            src={skin.image || "/cod.png"}
             alt={skin.name}
             fill
             className="object-cover transition-transform duration-500 group-hover:scale-110"
@@ -138,7 +138,7 @@ export default function OwnedSkinCard({ skin, onSell }) {
               <div className="mb-6">
                 <div className="flex items-center mb-4">
                   <div className="w-16 h-16 relative rounded-md overflow-hidden mr-4">
-                    <Image src={skin.image || "/placeholder.svg"} alt={skin.name} fill className="object-cover" />
+                    <Image src={skin.image || "/cod.png"} alt={skin.name} fill className="object-cover" />
                   </div>
                   <div>
                     <h4 className="font-medium">{skin.name}</h4>

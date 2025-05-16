@@ -44,7 +44,7 @@ export default function GameCard({ game, index }) {
     >
       <div className="relative h-48">
         <Image
-          src={game.image || "/placeholder.svg"}
+          src={game.image || "/cod.png"}
           alt={game.name}
           fill
           className="object-cover transition-transform duration-500"
