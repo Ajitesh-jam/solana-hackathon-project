@@ -6,10 +6,7 @@ export async function POST(request) {
   try {
     const { listingId, skinId, sellerName, sellerWalletAddress, price, listedDate } = await request.json();
 
-    // Validate input
-    if (!listingId || !skinId || !sellerName || !sellerWalletAddress || !price || !listedDate) {
-      return Response.json({ message: "All seller fields are required" }, { status: 400 });
-    }
+   
     
     //delete skin from the user
     const userRef = doc(db, "users", sellerName);

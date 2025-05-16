@@ -41,7 +41,7 @@ const games = {
     name: "Solana Battlefield",
     description:
       "Intense multiplayer battles with strategic gameplay and high stakes rewards.",
-    link: "unitydl://mylink",
+    link: "unitydl://mylink?",
     downloadLink: "/multi.zip",
   },
   solanaops: {
@@ -448,7 +448,7 @@ function GamePage() {
         game.link +
         "player_id=" +
         user.playerName +
-        "?roomCode=" +
+        "roomCode=" +
         lobbyCode +
         "&stakeAmount=" +
         stakeAmount +

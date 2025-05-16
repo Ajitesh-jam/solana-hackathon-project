@@ -26,6 +26,7 @@ export default function MarketplaceSkinCard({ listing, skin, onBuy }) {
 
   // Calculate discount percentage compared to official price
   const discountPercentage = Math.round(((skin.price - listing.price) / skin.price) * 100)
+  console.log("Skin", skin)
 
   return (
     <motion.div
@@ -72,7 +73,7 @@ export default function MarketplaceSkinCard({ listing, skin, onBuy }) {
             </span>
           </div>
         </div>
-        {skin.skinId}
+       
 
         <div className="flex justify-between items-center">
           <div>

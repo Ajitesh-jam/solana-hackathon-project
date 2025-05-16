@@ -208,6 +208,7 @@ export default function BuySkins() {
         console.log("Fetched data:", data);
         //setSkins(data.listings);
         setMarketplaceListings(data.listings);
+        console.log("Fetched marketplace listings:", data.listings);
 
         setIsLoading(false);
         // // Using mock data for now

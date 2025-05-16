@@ -207,6 +207,7 @@ export default function SellSkins() {
         }
 
         const data = await response.json()
+        console.log("User Skins Data:", data)
        
         const userSkinIds = data.skins;
         console.log("User Skin IDs:", userSkinIds)
@@ -321,9 +322,13 @@ export default function SellSkins() {
 
 
       //refresh window
-      window.location.reload()
+      //window.location.reload()
+      //after 2 seconds give alert that skin is listed successfully
+      setTimeout(() => {
+        alert("Skin listed successfully")
+         window.location.reload()
 
-
+      }, 2000)
 
   }
 
