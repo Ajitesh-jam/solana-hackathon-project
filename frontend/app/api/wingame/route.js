@@ -36,6 +36,41 @@ export async function POST(req) {
       );
     }
 
+
+    //validate if the wallet address exists in the database wiht the room code (to verify he/she had paid the money)
+    const docRef = doc(db, 'Games', roomCode);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      console.log("Document data:", docSnap.data());
+    } else {
+      console.log("No such document!");
+      return NextResponse.json(
+        { success: false, message: "No such document!" },
+        { status: 400 }
+      );
+    }
+
+    const room = docSnap.data();
+    if(!room.joinedPlayerWalletAddress==walletAddress || room.hostPlayerWalletAddress!=walletAddress) {
+      console.log("The wallet address had not paid or is not in the players list");
+      return NextResponse.json(
+        { success: false, message: "The wallet address is not in the players list" },
+        { status: 400 }
+      );
+    }
+    // Check if the wallet address is valid
+    const isValidWalletAddress = PublicKey.isOnCurve(walletAddress);
+    if (!isValidWalletAddress) {
+      console.log("Invalid wallet address format:", walletAddress);
+      return NextResponse.json(
+        { success: false, message: "Invalid wallet address format" },
+        { status: 400 }
+      );
+    }
+    // Check if the amount is a valid number
+
+
+
     // Initialize connection to Solana devnet
     const connection = new Connection(
       clusterApiUrl("devnet"),   

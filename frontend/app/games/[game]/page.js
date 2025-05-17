@@ -446,26 +446,34 @@ function GamePage() {
     if (modalType === "host") {
       const link =
         game.link +
-        "player_id=" +
+        "name=" +
         user.playerName +
-        "roomCode=" +
-        lobbyCode +
-        "&stakeAmount=" +
-        stakeAmount +
+        "&player_id=" +
+        user.playerName +
         "&wallet_address=" +
-        publicKey.toString(); //unitydl://mylink?player_id=1234&wallet_address=1312321&name=vedant
-      window.open(link, "_blank");
-    } else if (modalType === "join" && selectedRoom) {
-      const link =
+        publicKey.toString() + 
+        "&tokens=" +
+        stakeAmount +
+        "&room_code=" +
+        lobbyCode +
+        "&skin_ids=" +
+        user.skins.join(",") ;
+        window.open(link, "_blank");
+      } else if (modalType === "join" && selectedRoom) {
+        const link =
         game.link +
-        "player_id=" +
+        "name=" +
         user.playerName +
-        "?roomCode=" +
-        lobbyCode +
-        "&stakeAmount=" +
-        stakeAmount +
+        "&player_id=" +
+        user.playerName +
         "&wallet_address=" +
-        publicKey.toString(); //unitydl://mylink?player_id=1234&wallet_address=1312321&name=vedant
+        publicKey.toString() + 
+        "&tokens=" +
+        stakeAmount +
+        "&room_code=" +
+        lobbyCode +
+        "&skin_ids=" +
+        user.skins.join(",") ;
       window.open(link, "_blank");
     }
   };
